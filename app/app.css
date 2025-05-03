@@ -7,9 +7,20 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-[#0F0F0F] text-white;
+  height: 100%;
+  margin: 0;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+@keyframes marquee-track {
+  0% {
+    transform: translateX(0%);
   }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee-track {
+  animation: marquee-track 10s linear infinite;
 }
