@@ -15,17 +15,17 @@ function Login() {
     return (
         <div className="w-full h-screen bg-[#0F0F0F] flex">
             {/* Botão fixo próximo à barra lateral */}
-            <div className="fixed m-5 h-screen w-16 ">
-                <button className="bg-[#6200EE] text-white p-2 rounded-md hover:bg-[#7C4DFF] transition duration-300">
+            {/* <div className="fixed m-5 h-screen w-16 ">
+                <button className="bg-[#6200EE] text-white p-2 rounded-md hover:bg-[#7C4DFF] transition duration-300 ">
                     Menu
                 </button>
-            </div>
+            </div> */}
 
             <div className="w-full max-w-sm min-w-[350px] p-6 m-auto">
-                <h1 className="text-white font-medium text-center pb-5 text-2xl">
+                <h1 className="text-[#FAFAFA] font-extrabold text-center pb-3 text-2xl">
                     Login
                 </h1>
-                <p className="text-[#8D8D8D] text-center pb-6">
+                <p className="text-[#FAFAFA] text-center pb-6">
                     Faça login para realizar o seu pedido!
                 </p>
 
@@ -38,7 +38,7 @@ function Login() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full bg-[#1D1D1D] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#8D8D8D] hover:border-[#8D8D8D]"
+                            className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#8D8D8D] hover:border-[#8D8D8D]"
                             placeholder="Insira o seu email"
                             required
                         />
@@ -52,7 +52,7 @@ function Login() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full bg-[#1D1D1D] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#8D8D8D] hover:border-[#8D8D8D]"
+                            className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#8D8D8D] hover:border-[#8D8D8D]"
                             placeholder="Insira sua senha"
                             required
                         />
@@ -73,23 +73,24 @@ function Login() {
 
                     <button
                         type="submit"
-                        className="w-full bg-[#6200EE] text-white py-2 rounded-md hover:bg-[#7C4DFF] transition duration-300"
+                        className="w-full bg-[#1EB4C3] text-[#FAFAFA] py-2 rounded-md hover:bg-[#1eb5c3d6] transition duration-300 cursor-pointer"
                     >
                         Entrar
                     </button>
                 </form>
 
-                <div className="mt-6 text-center text-sm text-[#8D8D8D]">
+                <div className="mt-5 text-center text-sm text-[#8D8D8D]">
                     <p className="mb-2">
-                        Ao fazer login você concorda com a nossa{" "}
-                        <Link to="/privacy" className="text-[#BB86FC] hover:underline">
-                            Política de Privacidade
+                        Ainda não tem uma conta?{" "}
+                        <Link to="/register" className="text-[#FAFAFA] underline">
+                            Cadastre-se
                         </Link>
                     </p>
+
                     <p>
-                        Ainda não tem uma conta?{" "}
-                        <Link to="/register" className="text-[#BB86FC] hover:underline">
-                            Cadastre-se
+                        Ao fazer login você concorda com a nossa{" "}
+                        <Link to="/privacy" className="text-[#8D8D8D] underline">
+                            Política de Privacidade
                         </Link>
                     </p>
                 </div>
