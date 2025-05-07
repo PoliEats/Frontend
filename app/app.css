@@ -14,13 +14,21 @@ body {
 
 @keyframes marquee-track {
   0% {
-    transform: translateX(0%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 
 .animate-marquee-track {
-  animation: marquee-track 10s linear infinite;
+  display: flex;
+  animation: marquee-track 9s linear infinite;
+  white-space: nowrap;
 }
+
+.marquee-text {
+  display: inline-block;
+  padding: 0 1rem;
+}
+

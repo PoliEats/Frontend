@@ -7,26 +7,26 @@ function LandingPage() {
     <div className="min-h-screen bg-[#0F0F0F] text-white">
       <div className="flex flex-col gap-24 px-6 lg:px-20 font-lato mt-12 bg-[#0F0F0F]">
 
-        {/* Primeiro bloco: título e imagem */}
+        {/* primeiro bloco: título e imagem */}
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="space-y-6 max-w-lg w-full lg:w-1/2">
             <h1 className="text-[36px] lg:text-[64px] leading-tight">
               <b>PoliEats</b> – Peça, Consulte e Descubra com um Toque!
             </h1>
-            {/* Botão de pedido desktop*/}
+            {/* botão de pedido desktop */}
             <button className="hidden lg:inline-block cursor-pointer px-8 py-4 bg-[#1EB4C3] hover:bg-[#17a0ad] rounded-lg text-lg font-semibold transition transform hover:scale-105 duration-300">
               Faça seu pedido!
             </button>
           </div>
           <div className="w-full lg:w-1/2 mt-8 lg:mt-0 relative flex justify-center items-center">
-            {/*bola azul que some*/}
+            {/* efeito azul que some */}
             <div className="absolute w-[700px] h-[700px] rounded-full z-0 filter blur-2xl lg:block hidden" style={{ background: 'radial-gradient(circle at center, #269DA9 0%, #0F0F0F 100%)' }}></div>
-            {/* Imagem do celular com efeito de transição */}
+            {/* imagem do celular com efeito de transição */}
             <img src={celular} alt="Ilustração do aplicativo" className="w-[550px] h-auto relative z-10 transition-transform duration-300 transform hover:-translate-y-2" />
           </div>
         </div>
 
-        {/* Botão "Faça seu pedido!" visível apenas no mobile */}
+        {/* Botão apenas no mobile */}
         <div className="w-full lg:hidden flex justify-start pl-6 mt-8">
           <button className="cursor-pointer px-8 py-4 bg-[#1EB4C3] hover:bg-[#17a0ad] rounded-lg text-lg font-semibold transition transform hover:scale-105 duration-300">
             Faça seu pedido!
@@ -53,29 +53,42 @@ function LandingPage() {
           </div>
         </div>
 
-
       </div>
-        {/*ultimo texto*/}
-        <div className="w-full mt-16 overflow-hidden relative h-[60px]">
 
-          {/* texto desktop*/}
-          <div className="hidden md:flex animate-marquee-track absolute whitespace-nowrap">
-            <span className="text-5xl font-medium text-white px-4">
-              Faça pedidos, verifique status e receba ofertas exclusivas. Tudo pelo chat!
-            </span>
-            <span className="text-5xl font-medium text-white px-4">
-              Faça pedidos, verifique status e receba ofertas exclusivas. Tudo pelo chat!
-            </span>
-          </div>
-
-          {/* texto mobile */}
-          <div className="flex md:hidden justify-center items-center h-full px-4">
-            <span className="text-xl font-medium text-white text-center">
-              Faça pedidos pelo chat e receba ofertas exclusivas.
-            </span>
-          </div>
-
+      {/* texto marquee (somente desktop) */}
+      <div className="w-full mt-48 hidden lg:block overflow-hidden relative h-[60px]">
+        <div className="animate-marquee-track absolute whitespace-nowrap">
+          <span className="text-5xl font-medium text-white inline-block mx-8">
+            Faça pedidos, verifique status e receba ofertas exclusivas. Tudo pelo chat!
+          </span>
+          <span className="text-5xl font-medium text-white inline-block mx-8">
+            Faça pedidos, verifique status e receba ofertas exclusivas. Tudo pelo chat!
+          </span>
         </div>
+      </div>
+
+      {/* texto mobile */}
+      <div className="flex lg:hidden justify-center items-center h-full px-4 mt-12">
+        <span className="text-xl font-medium text-white text-center">
+          Faça pedidos pelo chat e receba ofertas exclusivas.
+        </span>
+      </div>
+
+      <div className="relative mt-18">
+        {/* onda SVG azul subindo sobre o fundo preto */}
+        <svg viewBox="0 0 1440 150" className="w-full h-[100px] lg:h-[120px]" preserveAspectRatio="none">
+          {/* onda suave para dispositivos móveis */}
+          <path fill="#1EB4C3" className="block lg:hidden" d="M0,100 C480,50 960,150 1440,100 L1440,150 L0,150 Z"/>
+          {/* onda acentuada para desktop */}
+          <path fill="#1EB4C3" className="hidden lg:block" d="M0,100 C480,-50 960,250 1440,100 L1440,150 L0,150 Z"/>
+        </svg>
+
+        {/*footer*/}
+        <div className="bg-[#1EB4C3] text-black text-center py-8">
+          <p className="text-lg">© 2025 PoliEats. Todos os direitos reservados.</p>
+        </div>
+      </div>
+
     </div>
   );
 }
