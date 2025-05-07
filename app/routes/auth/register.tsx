@@ -2,7 +2,7 @@ import React from 'react'
 
 function Register() {
   return (
-    <div className='w-full h-screen bg-[#0F0F0F] flex items-center justify-center'>
+    <div className='w-full overflow-hidden bg-[#0F0F0F] flex items-center justify-center h-[calc(100vh-4rem)]'> {/* remove a altura na navbar da altura total */}
       <div>
         <p className='text-white text-4xl flex items-center justify-center pb-5' >Cadastre-se</p>
 
@@ -31,24 +31,19 @@ function Register() {
 
 
           <div>
-            <p className='text-[#8D8D8D] text-xs flex items-center justify-center pt-3'>Ao fazer login você concorda com a nossa Política de Privacidade</p>
+
+            <p className='text-[#8D8D8D] text-xs flex items-center justify-center pt-3'>
+            Ao fazer login você concorda com a nossa&nbsp;
+              <a href="/path/to/document.pdf" className="text-[#1F8B96] hover:underline">Política de Privacidade</a>
+            </p>
             <p className="text-[#8D8D8D] text-xs flex items-center justify-center">
               Já tem uma conta?&nbsp;
               <a href="/login" className="text-[#1F8B96] hover:underline">Faça login</a>
             </p>
 
-
           </div>
         </div>
-
-
-
-
-
       </div>
-
-
-
     </div >
 
   )
