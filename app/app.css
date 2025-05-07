@@ -5,11 +5,52 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+#chat-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white dark:bg-zinc-950;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
+  }
+}
+
+.dot-typing {
+  position: relative;
+  left: -9999px;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #f9f9f9;
+  box-shadow: 9984px 0 0 0 #f9f9f9, 9999px 0 0 0 #f9f9f9, 10014px 0 0 0 #f9f9f9;
+  animation: dot-typing 1.5s infinite linear;
+}
+
+@keyframes dot-typing {
+  0% {
+    box-shadow: 9984px 0 0 0 #f9f9f9, 9999px 0 0 0 #f9f9f9, 10014px 0 0 0 #f9f9f9;
+  }
+  16.667% {
+    box-shadow: 9984px -10px 0 0 #f9f9f9, 9999px 0 0 0 #f9f9f9, 10014px 0 0 0 #f9f9f9;
+  }
+  33.333% {
+    box-shadow: 9984px 0 0 0 #f9f9f9, 9999px 0 0 0 #f9f9f9, 10014px 0 0 0 #f9f9f9;
+  }
+  50% {
+    box-shadow: 9984px 0 0 0 #f9f9f9, 9999px -10px 0 0 #f9f9f9, 10014px 0 0 0 #f9f9f9;
+  }
+  66.667% {
+    box-shadow: 9984px 0 0 0 #f9f9f9, 9999px 0 0 0 #f9f9f9, 10014px 0 0 0 #f9f9f9;
+  }
+  83.333% {
+    box-shadow: 9984px 0 0 0 #f9f9f9, 9999px 0 0 0 #f9f9f9, 10014px -10px 0 0 #f9f9f9;
+  }
+  100% {
+    box-shadow: 9984px 0 0 0 #f9f9f9, 9999px 0 0 0 #f9f9f9, 10014px 0 0 0 #f9f9f9;
   }
 }
