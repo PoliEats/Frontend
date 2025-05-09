@@ -1,7 +1,8 @@
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
-import remarkGfm from "remark-gfm";
-import Markdown from "react-markdown";
 import { type ReactNode, useEffect, useState } from "react";
+import { Loader } from "react-feather";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface ChatBubbleProps {
   // Define any props you want to pass to the ChatBubble component
@@ -107,39 +108,35 @@ function ChatBubble({
         className={`flex ${sender === "user" ? "justify-end mr-4" : "justify-start ml-4"
           } mb-4`}
       >
-        <div
-          className={`max-w-xs p-3 px-8 gap-y-2 animate-pulse flex flex-row rounded-lg ${sender === "user" ? "rounded-tr-none" : "rounded-tl-none"
-            } shadow-md ${sender === "user"
-              ? "bg-[#1F8B96] text-white"
-              : "bg-gray-200 text-gray-800"
-            }`}
-        >
-          <div className="dot-typing" />
-        </div>
+        <Loader size={16} className="text-white animate-spin" />
       </div>
     );
 }
 
+interface Option {
+  label: string;
+  onClick: () => void;
+}
+
 interface ChatBubbleOptions {
-  options?: {
-    [key: string]: any;
-  };
+  options?: Option[];
   onSelect?: (option: string) => void;
 }
 
 function ChatBubbleOptions({
   options,
-  onSelect,
 }: ChatBubbleOptions) {
   return (
     <div className="flex flex-col gap-y-2 mt-2">
-      {options?.map((option: string, index: number) => (
+      {options?.map((option: Option, index: number) => (
         <button
           key={index}
           className="text-[#6dc0c9] text-sm bg-zinc-700/30 rounded-sm text-center px-4 py-2 hover:text-[#1F8B96] transition-all duration-300 cursor-pointer"
-          onClick={() => onSelect?.(option)}
+          onClick={() => {
+            option.onClick();
+          }}
         >
-          {option}
+          {option.label}
         </button>
       ))}
     </div>
@@ -147,3 +144,4 @@ function ChatBubbleOptions({
 }
 
 export { ChatBubble, ChatBubbleOptions };
+
