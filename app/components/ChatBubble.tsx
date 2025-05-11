@@ -25,9 +25,8 @@ function ChatBubble({
   const [hasEnded, setEnded] = useState(false);
   const count = useMotionValue(0);
   const roundedCount = useTransform(count, (latest) => Math.round(latest));
-  const displayText = useTransform(
-    roundedCount,
-    (latest) => message.slice(0, latest),
+  const displayText = useTransform(roundedCount, (latest) =>
+    message.slice(0, latest)
   );
 
   useEffect(() => {
@@ -42,75 +41,83 @@ function ChatBubble({
     return controls.stop;
   }, []);
 
-  return !loading
-    ? (
-      <motion.div
-        initial={{
-          opacity: 0,
-          y: 10,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        exit={{
-          opacity: 0,
-          y: 10,
-        }}
-        transition={{
-          duration: 0.4,
-          ease: "easeInOut",
-        }}
-        className={`flex ${sender === "user" ? "justify-end md:mr-4" : "justify-start md:ml-4"
-          } mb-4`}
-      >
-        <div
-          className={`max-w-sm p-3 px-4 md:px-8 gap-y-2 flex flex-col rounded-lg text-sm md:text-base ${sender === "user" ? "rounded-tr-none" : "rounded-tl-none"
-            } shadow-md ${sender === "user" ? "bg-[#1F8B96] text-white" : "bg-zinc-800"
-            }`}
-        >
-          <div className={`flex flex-row gap-x-2`}>
-            <img
-              src={sender === "user"
-                ? "https://api.dicebear.com/9.x/thumbs/svg?flip=false"
-                : "https://api.dicebear.com/9.x/bottts/svg?seed=PoliEats&backgroundColor=c0aede"}
-              alt="User"
-              className="w-4 h-4 rounded-full"
-            />
-            <small
-              className={`text-xs ${sender === "user" ? "text-gray-300" : "text-gray-500"
-                }`}
-            >
-              {sender === "user" ? "Você" : "PoliEats"}
-            </small>
-          </div>
-          <motion.p>
-            {sender === "bot"
-              ? (
-                hasEnded
-                  ? <Markdown remarkPlugins={[remarkGfm]}>{message}</Markdown>
-                  : displayText
-              )
-              : message}
-          </motion.p>
-          {children}
-          <span
-            className={`text-xs ${sender === "user" ? "text-gray-300" : "text-gray-500"
-              }`}
-          >
-            {timestamp}
-          </span>
-        </div>
-      </motion.div>
-    )
-    : (
+  return !loading ? (
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 10,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      exit={{
+        opacity: 0,
+        y: 10,
+      }}
+      transition={{
+        duration: 0.4,
+        ease: "easeInOut",
+      }}
+      className={`flex ${
+        sender === "user" ? "justify-end md:mr-4" : "justify-start md:ml-4"
+      } mb-4`}
+    >
       <div
-        className={`flex ${sender === "user" ? "justify-end mr-4" : "justify-start ml-4"
-          } mb-4`}
+        className={`max-w-sm p-3 px-4 md:px-8 gap-y-2 flex flex-col rounded-lg text-sm md:text-base ${
+          sender === "user" ? "rounded-tr-none" : "rounded-tl-none"
+        } shadow-md ${
+          sender === "user" ? "bg-[#1F8B96] text-white" : "bg-zinc-800"
+        }`}
       >
-        <Loader size={16} className="text-white animate-spin" />
+        <div className={`flex flex-row gap-x-2`}>
+          <img
+            src={
+              sender === "user"
+                ? "https://api.dicebear.com/9.x/thumbs/svg?flip=false"
+                : "https://api.dicebear.com/9.x/bottts/svg?seed=PoliEats&backgroundColor=c0aede"
+            }
+            alt="User"
+            className="w-4 h-4 rounded-full"
+          />
+          <small
+            className={`text-xs ${
+              sender === "user" ? "text-gray-300" : "text-gray-500"
+            }`}
+          >
+            {sender === "user" ? "Você" : "PoliEats"}
+          </small>
+        </div>
+        <motion.p>
+          {sender === "bot" ? (
+            hasEnded ? (
+              <Markdown remarkPlugins={[remarkGfm]}>{message}</Markdown>
+            ) : (
+              displayText
+            )
+          ) : (
+            message
+          )}
+        </motion.p>
+        {children}
+        <span
+          className={`text-xs ${
+            sender === "user" ? "text-gray-300" : "text-gray-500"
+          }`}
+        >
+          {timestamp}
+        </span>
       </div>
-    );
+    </motion.div>
+  ) : (
+    <div
+      className={`flex ${
+        sender === "user" ? "justify-end mr-4" : "justify-start ml-4"
+      } mb-4`}
+    >
+      <Loader size={16} className="text-white animate-spin" />
+    </div>
+  );
 }
 
 interface Option {
@@ -123,9 +130,7 @@ interface ChatBubbleOptions {
   onSelect?: (option: string) => void;
 }
 
-function ChatBubbleOptions({
-  options,
-}: ChatBubbleOptions) {
+function ChatBubbleOptions({ options }: ChatBubbleOptions) {
   return (
     <div className="flex flex-col gap-y-2 mt-2">
       {options?.map((option: Option, index: number) => (
@@ -144,4 +149,3 @@ function ChatBubbleOptions({
 }
 
 export { ChatBubble, ChatBubbleOptions };
-

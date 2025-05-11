@@ -9,7 +9,7 @@ function QuickMessage({
   title,
   message,
   disabled = false,
-  onClick = () => { },
+  onClick = () => {},
 }: QuickMessageProps) {
   return (
     <div
@@ -17,8 +17,9 @@ function QuickMessage({
       onClick={onClick}
     >
       <p
-        className={`text-xs md:text-sm ${disabled ? "text-gray-800" : "text-white"
-          }`}
+        className={`text-xs md:text-sm ${
+          disabled ? "text-gray-800" : "text-white"
+        }`}
       >
         {title}
       </p>
@@ -27,4 +28,3 @@ function QuickMessage({
 }
 
 export default QuickMessage;
-

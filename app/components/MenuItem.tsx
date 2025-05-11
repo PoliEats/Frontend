@@ -1,19 +1,41 @@
-function MenuItem() {
+import { motion } from "framer-motion";
+
+function MenuItem({
+  image,
+  name,
+  description,
+  price,
+  category,
+  key,
+}: {
+  image: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  key: number;
+}) {
   return (
-    <div
-        className="flex flex-col gap-y-6 items-center h-fit w-full bg-zinc-800 rounded-lg p-4 hover:ring-2 hover:ring-[#1F8B96] transition-all duration-300 cursor-pointer" 
+    <motion.section
+      key={key}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
-        <img 
-            src="https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Menu Item"
-            className="w-32 h-32 rounded-full shadow-lg object-cover ring"
+      <motion.div className="flex flex-col gap-y-6 items-center h-full w-full bg-zinc-800 rounded-lg p-4 hover:ring-2 hover:ring-[#1F8B96] transition-all duration-300 cursor-pointer">
+        <img
+          src={image}
+          alt="Menu Item"
+          className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-lg object-cover ring"
         />
-        <div className='w-full h-fit'>
-            <h4 className=''>Filé de frango</h4>
-            <p className='text-sm text-gray-500'>R$ 25,00</p>
+        <div className="w-full h-fit">
+          <h4 className="text-base">{name}</h4>
+          <p className="text-sm text-gray-500">R$ {price}</p>
         </div>
-    </div>
-  )
+      </motion.div>
+    </motion.section>
+  );
 }
 
-export default MenuItem
+export default MenuItem;
