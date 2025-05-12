@@ -103,7 +103,7 @@ function DrawerMenu() {
         className="w-full h-10 bg-zinc-900 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-[#1F8B96] transition-all duration-300 text-sm"
         placeholder="Pesquise um item..."
       />
-      <div className="w-ful h-16 flex flex-row gap-x-4 overflow-x-auto scroll-smooth scroll-m-0">
+      <div className="w-full h-fit min-h-16 flex flex-row gap-x-4 overflow-auto scroll-smooth scroll-m-0">
         {mockFilters.map((filter, index) => (
           <FilterOption
             key={index}
@@ -111,8 +111,8 @@ function DrawerMenu() {
             onClick={() => {
               categoryFilter.includes(filter.title)
                 ? setCategoryFilter(
-                    categoryFilter.filter((item) => item !== filter.title)
-                  )
+                  categoryFilter.filter((item) => item !== filter.title),
+                )
                 : setCategoryFilter([...categoryFilter, filter.title]);
             }}
             isSelected={categoryFilter.includes(filter.title)}
@@ -120,7 +120,7 @@ function DrawerMenu() {
         ))}
       </div>
       <div className="w-full h-full max-h-svh pb-18 p-4 overflow-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-auto gap-x-4 gap-y-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-auto gap-x-4 gap-y-4">
           <AnimatePresence>
             {displayedItems.map((item, index) => (
               <MenuItem
@@ -159,12 +159,27 @@ interface TQuickMessage {
   onClick?: () => void;
 }
 
+interface OrderItem {
+  name: string;
+  quantity: number;
+  price: number;
+  observation?: string;
+}
+
+interface Order {
+  name: string;
+  status: "pending" | "canceled" | "fullfilled";
+  total: number;
+  items: OrderItem[];
+}
+
 function Chat() {
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [newOrder, setNewOrder] = useState<Order>();
 
   const quickMessages: TQuickMessage[] = [
     {
@@ -245,13 +260,13 @@ function Chat() {
     // Scroll to the bottom of the chat container when a new message is added
     const chatContainer = document.getElementById("chat-container");
     if (chatContainer) {
-      chatContainer.scrollTop =
-        chatContainer.scrollHeight - chatContainer.clientHeight;
+      chatContainer.scrollTop = chatContainer.scrollHeight -
+        chatContainer.clientHeight;
     }
   }, [messages]);
 
   function orderConfirmation({
-    confirm
+    confirm,
   }: {
     confirm: boolean;
   }) {
@@ -266,11 +281,13 @@ function Chat() {
     const newMessage: {
       type: string;
       message: string;
+      order?: Order;
     } = JSON.parse(message);
 
     console.log(newMessage);
 
     if (newMessage.type == "order") {
+      setNewOrder(newMessage.order);
       setIsModalOpen(true);
       return;
     }
@@ -280,17 +297,16 @@ function Chat() {
       {
         message: newMessage.message,
         sender: "bot",
-        options:
-          newMessage.type == "welcome"
-            ? [
-                {
-                  label: "Ver cardápio",
-                  onClick: () => {
-                    setIsMenuDrawerOpen(true);
-                  },
-                },
-              ]
-            : undefined,
+        options: newMessage.type == "welcome"
+          ? [
+            {
+              label: "Ver cardápio",
+              onClick: () => {
+                setIsMenuDrawerOpen(true);
+              },
+            },
+          ]
+          : undefined,
         timestamp: new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -326,33 +342,37 @@ function Chat() {
           <div className="w-full h-full">
             <p className="text-sm text-zinc-500">Informações do pedido</p>
             <div className="w-full h-full flex flex-col gap-y-4 overflow-auto scroll-smooth scroll-m-0 py-4">
-              <div className="flex flex-row items-center justify-between w-full">
-                <div>
-                  <p className="text-sm">1x - Hamburguer</p>
-                  <p className="text-xs text-zinc-500">
-                    Observações: sem tomate
+              {newOrder?.items.map((item) => (
+                <div className="flex flex-row items-center justify-between w-full">
+                  <div>
+                    <p className="text-sm">
+                      {item.quantity}x - {item.name}
+                    </p>
+                    {item.observation && (
+                      <p className="text-xs text-zinc-500">
+                        Observações: {item.observation}
+                      </p>
+                    )}
+                  </div>
+                  <p className="text-sm text-zinc-500">
+                    {item.price.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
                   </p>
                 </div>
-                <p className="text-sm text-zinc-500">R$ 20,00</p>
-              </div>
-              <div className="flex flex-row items-center justify-between w-full">
-                <div>
-                  <p className="text-sm">1x - Batata frita</p>
-                </div>
-                <p className="text-sm text-zinc-500">R$ 10,00</p>
-              </div>
-              <div className="flex flex-row items-center justify-between w-full">
-                <div>
-                  <p className="text-sm">1x - Refrigerante</p>
-                </div>
-                <p className="text-sm text-zinc-500">R$ 5,00</p>
-              </div>
+              ))}
             </div>
           </div>
           <hr className="text-zinc-500" />
           <div className="w-full h-fit min-h-12 flex flex-row items-center justify-between font-bold">
             <p className="text-sm">Total</p>
-            <p className="text-sm">R$ 35,00</p>
+            <p className="text-sm">
+              {newOrder?.total.toLocaleString("pt-BR", {
+                currency: "BRL",
+                style: "currency",
+              })}
+            </p>
           </div>
           <div className="w-full h-fit flex flex-row items-center justify-end gap-x-2">
             <button
@@ -360,7 +380,7 @@ function Chat() {
                 orderConfirmation({ confirm: false });
                 setIsModalOpen(false);
               }}
-              className="bg-zinc-800 text-sm p-4 py-2 hover:bg-zinc-700 duration-300 cursor-pointer rounded-lg transition-all"
+              className="bg-secondary-500 text-sm p-4 py-2 hover:bg-zinc-700 duration-300 cursor-pointer rounded-lg transition-all"
             >
               Cancelar
             </button>
@@ -382,8 +402,8 @@ function Chat() {
           <DrawerMenu />
         </DrawerContent>
       </Drawer>
-      <div className="w-full h-full md:flex md:flex-row grid grid-rows-[8%_90%] bg-zinc-950 border-zinc-800 max-w-7xl mx-auto rounded-lg gap-4">
-        <div className="w-full md:w-1/12 md:min-w-20 h-full bg-zinc-900 rounded-lg border-zinc-800 md:rounded-l-lg md:p-2 md:pb-8 md:pt-4 flex md:flex-col md:justify-between md:items-center flex-row justify-between items-center px-4 md:px-0">
+      <div className="w-full h-full md:flex md:flex-row grid grid-rows-[8%_90%] bg-background-950 border-secondary-500 max-w-7xl mx-auto rounded-lg gap-4">
+        <div className="w-full md:w-1/12 md:min-w-20 h-full bg-secondary-900 rounded-lg border-secondary-500 md:rounded-l-lg md:p-2 md:pb-8 md:pt-4 flex md:flex-col md:justify-between md:items-center flex-row justify-between items-center px-4 md:px-0">
           <img
             src="icon.png"
             alt="Logo"
@@ -468,9 +488,9 @@ function Chat() {
               ]);
               setIsLoading(true);
 
-              setUserInput("");
-
               socket.emit("message", userInput);
+
+              setUserInput("");
             }}
             className="w-full h-fit flex flex-row gap-x-4 items-center justify-between"
           >
