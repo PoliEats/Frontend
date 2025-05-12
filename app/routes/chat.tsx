@@ -1,7 +1,8 @@
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Book, Menu, Moon, Send, X } from "react-feather";
+import { Book, Menu, Send, X } from "react-feather";
 import { ChatBubble, ChatBubbleOptions } from "~/components/ChatBubble";
+import DarkModeToggle from "~/components/DarkModeToggle";
 import { Drawer, DrawerContent, DrawerTopbar } from "~/components/Drawer";
 import FilterOption from "~/components/FilterOption";
 import MenuItem from "~/components/MenuItem";
@@ -167,6 +168,7 @@ interface OrderItem {
 }
 
 interface Order {
+  id: number;
   name: string;
   status: "pending" | "canceled" | "fullfilled";
   total: number;
@@ -271,9 +273,9 @@ function Chat() {
     confirm: boolean;
   }) {
     if (confirm) {
-      socket.emit("order_confirmation", JSON.stringify({ type: "confirm" }));
+      socket.emit("order_confirmation", JSON.stringify({ orderId: newOrder?.id, type: "confirm" }));
     } else {
-      socket.emit("order_confirmation", JSON.stringify({ type: "cancel" }));
+      socket.emit("order_confirmation", JSON.stringify({ orderId: newOrder?.id, type: "cancel" }));
     }
   }
 
@@ -402,8 +404,8 @@ function Chat() {
           <DrawerMenu />
         </DrawerContent>
       </Drawer>
-      <div className="w-full h-full md:flex md:flex-row grid grid-rows-[8%_90%] bg-background-950 border-secondary-500 max-w-7xl mx-auto rounded-lg gap-4">
-        <div className="w-full md:w-1/12 md:min-w-20 h-full bg-secondary-900 rounded-lg border-secondary-500 md:rounded-l-lg md:p-2 md:pb-8 md:pt-4 flex md:flex-col md:justify-between md:items-center flex-row justify-between items-center px-4 md:px-0">
+      <div className="w-full h-full md:flex md:flex-row grid grid-rows-[8%_90%] bg-background-900 border-secondary-500 max-w-7xl mx-auto rounded-lg gap-4">
+        <div className="w-full md:w-1/12 md:min-w-20 h-full bg-background-950 rounded-lg border-secondary-500 md:rounded-l-lg md:p-2 md:pb-8 md:pt-4 flex md:flex-col md:justify-between md:items-center flex-row justify-between items-center px-4 md:px-0">
           <img
             src="icon.png"
             alt="Logo"
@@ -412,7 +414,7 @@ function Chat() {
           <button className="md:hidden">
             <Menu />
           </button>
-          <div className="hidden md:flex flex-col gap-y-8">
+          <div className="hidden md:flex flex-col gap-y-8 text-text-200">
             <button
               onClick={() => {
                 setIsMenuDrawerOpen(true);
@@ -421,10 +423,7 @@ function Chat() {
             >
               <Book size={24} />
             </button>
-            <Moon
-              size={24}
-              className="hidden md:block cursor-pointer hover:text-[#1F8B96] transition-colors duration-300"
-            />
+            <DarkModeToggle />
           </div>
         </div>
         <div className="w-full h-full flex flex-col justify-between p-2 md:p-4 gap-y-4 py-4">
@@ -499,12 +498,12 @@ function Chat() {
               onChange={(e) => {
                 setUserInput(e.target.value);
               }}
-              className="w-full h-10 bg-zinc-900 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-[#1F8B96] transition-all duration-300 text-sm"
+              className="w-full h-10 bg-background-950 rounded-lg px-4 focus:outline-none focus:ring-2 text-text-200 focus:ring-[#1F8B96] transition-all duration-300 text-sm"
               placeholder="Digite sua mensagem aqui..."
             />
             <button
               type="submit"
-              className="w-fit min-w-10 min-h-10 flex items-center justify-center md:px-6 h-full bg-[#15747f] hover:bg-[#1F8B96] duration-300 cursor-pointer rounded-full md:rounded-lg transition-all"
+              className="w-fit min-w-10 min-h-10 flex items-center justify-center md:px-6 h-full bg-primary-500 hover:bg-primary-600 duration-300 cursor-pointer rounded-full md:rounded-lg transition-all"
             >
               <span className="hidden md:block">Enviar</span>
               <Send className="md:hidden" size={16} />

@@ -67,7 +67,7 @@ function ChatBubble({
         className={`max-w-sm p-3 px-4 md:px-8 gap-y-2 flex flex-col rounded-lg text-sm md:text-base ${
           sender === "user" ? "rounded-tr-none" : "rounded-tl-none"
         } shadow-md ${
-          sender === "user" ? "bg-[#1F8B96] text-white" : "bg-zinc-800"
+          sender === "user" ? "bg-primary-500 text-white" : "bg-background-950 text-text-200"
         }`}
       >
         <div className={`flex flex-row gap-x-2`}>
@@ -136,7 +136,7 @@ function ChatBubbleOptions({ options }: ChatBubbleOptions) {
       {options?.map((option: Option, index: number) => (
         <button
           key={index}
-          className="text-[#6dc0c9] text-sm bg-zinc-700/30 rounded-sm text-center px-4 py-2 hover:text-[#1F8B96] transition-all duration-300 cursor-pointer"
+          className="text-[#6dc0c9] text-sm bg-background-800/20 rounded-sm text-center px-4 py-2 hover:text-[#1F8B96] transition-all duration-300 cursor-pointer"
           onClick={() => {
             option.onClick();
           }}
