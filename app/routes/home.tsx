@@ -95,11 +95,11 @@ function LandingPage() {
 
       <div className="bg-[#1EB4C3] text-[#0f0f0f] py-12">
         <div className="flex flex-col lg:flex-row justify-between gap-12 px-6 lg:px-32 text-lg lg:text-xl">
-          <div className="bg-white/20 rounded-2xl p-8 backdrop-blur-md w-full lg:w-1/2 space-y-6 shadow-lg">
-            <h2 className="text-3xl font-bold">Horário de Atendimento</h2>
+          <div className="bg-white/20 rounded-2xl p-8 backdrop-blur-md w-full lg:w-1/2 space-y-6 shadow-lg transition-transform duration-300 transform hover:-translate-y-2">
+            <h2 className="text-3xl font-bold ">Horário de Atendimento</h2>
             <p>Segunda a sexta, das <b>8h às 18h</b></p>
             <p>Entre em contato pelo WhatsApp para mais informações.</p>
-            <div className="w-full h-64 rounded-xl overflow-hidden">
+            <div className="w-full h-64 rounded-xl overflow-hidden ">
               <iframe
                 title="Mapa Local"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.5740700593893!2d-46.639343424694725!3d-23.585441762453816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59b7793923ef%3A0x4fc5f0218f199f3e!2sCol%C3%A9gio%20Poliedro%20-%20Unidade%20Vila%20Mariana!5e0!3m2!1spt-BR!2sbr!4v1715520954737!5m2!1spt-BR!2sbr"
@@ -112,7 +112,7 @@ function LandingPage() {
               ></iframe>
             </div>
           </div>
-          <div className="bg-white/20 rounded-2xl p-8 backdrop-blur-md w-full lg:w-1/2 space-y-6 shadow-lg">
+          <div className="bg-white/20 rounded-2xl p-8 backdrop-blur-md w-full lg:w-1/2 space-y-6 shadow-lg transition-transform duration-300 transform hover:-translate-y-2">
             <h2 className="text-3xl font-bold">Contato</h2>
             <p>Restaurante Poliedro – CNPJ XX.XXX.XXX/0001-XX</p>
             <p>restaurantepoli@gmail.com</p>
