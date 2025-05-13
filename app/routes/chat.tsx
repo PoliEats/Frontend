@@ -9,6 +9,7 @@ import MenuItem from "~/components/MenuItem";
 import { Modal, ModalContent } from "~/components/Modal";
 import QuickMessage from "~/components/QuickMessage";
 import { socket } from "~/functions/functions";
+import type { Message, Order, TQuickMessage } from "~/functions/interfaces";
 
 function DrawerMenu() {
   const mockItems = [
@@ -47,7 +48,7 @@ function DrawerMenu() {
   ];
 
   const [nameFilter, setNameFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const [displayedItems, setDisplayedItems] = useState(mockItems);
 
   const mockFilters = [
@@ -138,41 +139,6 @@ function DrawerMenu() {
       </div>
     </div>
   );
-}
-
-interface Option {
-  label: string;
-  onClick: () => void;
-}
-
-interface Message {
-  message: string;
-  sender: "user" | "bot";
-  timestamp: string;
-  options?: Option[];
-  loading?: boolean;
-}
-
-interface TQuickMessage {
-  title: string;
-  message: string;
-  disabled?: boolean;
-  onClick?: () => void;
-}
-
-interface OrderItem {
-  name: string;
-  quantity: number;
-  price: number;
-  observation?: string;
-}
-
-interface Order {
-  id: number;
-  name: string;
-  status: "pending" | "canceled" | "fullfilled";
-  total: number;
-  items: OrderItem[];
 }
 
 function Chat() {
