@@ -38,7 +38,7 @@ function Login() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#8D8D8D] hover:border-[#8D8D8D]"
+                            className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#1EB4C3] hover:border-[#1EB4C3]"
                             placeholder="Insira o seu email"
                             required
                         />
@@ -52,7 +52,7 @@ function Login() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#8D8D8D] hover:border-[#8D8D8D]"
+                            className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#1EB4C3] hover:border-[#1EB4C3]"
                             placeholder="Insira sua senha"
                             required
                         />
