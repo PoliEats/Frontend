@@ -14,7 +14,7 @@ function LandingPage() {
         {/* primeiro bloco: título e imagem */}
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="space-y-6 max-w-lg w-full lg:w-1/2">
-            <h1 className="text-[36px] lg:text-[64px] leading-tight">
+            <h1 className="text-[36px] lg:text-[50px] leading-tight">
               <b>PoliEats</b> – Peça, Consulte e Descubra com um Toque!
             </h1>
             <button className="hidden lg:inline-block cursor-pointer px-8 py-4 bg-[#1EB4C3] hover:bg-[#17a0ad] rounded-lg text-lg font-semibold transition transform hover:scale-105 duration-300">
@@ -52,11 +52,12 @@ function LandingPage() {
             />
           </div>
 
-          <div className="space-y-6 max-w-lg w-full lg:w-1/2 mt-16 lg:mt-4 text-center lg:text-left lg:transform lg:translate-x-[-30%]">
-            <h1 className="text-[28px] lg:text-[48px] leading-tight">
+          <div className="space-y-6 max-w-lg w-full lg:w-1/2 mt-16 lg:mt-4 text-center lg:text-left 2xl:transform 2xl:translate-x-[-30%]">
+            <h1 className="text-[28px] lg:text-[34px] leading-tight">
               Quer evitar filas e pedir seu prato favorito em segundos? Converse com o <b>PoliEats!</b>
             </h1>
           </div>
+
         </div>
       </div>
 
