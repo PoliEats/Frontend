@@ -57,7 +57,7 @@ function ModalContent({ children, className }: { children: React.ReactNode, clas
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className={cn("bg-zinc-950 w-md h-1/2 rounded-lg flex flex-col px-4 pb-4", className)}
+      className={cn("bg-background-900 w-md h-1/2 rounded-lg flex flex-col px-4 pb-4", className)}
     >
       {children}
     </motion.div>
@@ -65,3 +65,4 @@ function ModalContent({ children, className }: { children: React.ReactNode, clas
 }
 
 export { Modal, ModalContent };
+

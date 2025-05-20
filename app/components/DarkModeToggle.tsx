@@ -12,7 +12,7 @@ function DarkModeToggle() {
     }
   
   return (
-    <button onClick={handleClick} className="flex items-center justify-center">
+    <button onClick={handleClick} className="flex items-center justify-center text-text-50">
         {isDarkMode ? (
             <Moon
                 size={24}

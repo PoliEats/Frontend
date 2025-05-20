@@ -5,6 +5,7 @@ import { socket } from "~/functions/functions"
 import type { Order } from "~/functions/interfaces"
 
 function KitchenScreen() {
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
     const [confirmingReady, setConfirmingReady] = useState<boolean>(false)
     const [confirmingPayment, setConfirmingPayment] = useState<boolean>(false)
     const [pendingOrders, setPendingOrders] = useState<Order[]>([
@@ -30,7 +31,7 @@ function KitchenScreen() {
         updatedAt: new Date().toISOString(),
       }
     ])
-    const [completedOrders, setCompletedOrders] = useState<Order[]>()
+    const [completedOrders, setCompletedOrders] = useState<Order[]>([])
 
     function handleNewOrder(data: string) {
         let order: Order = JSON.parse(data).newOrder
@@ -51,7 +52,22 @@ function KitchenScreen() {
         })
     };
 
+    function setOrderPaid(order: Order) {
+        setCompletedOrders((prev) => {
+            if (prev) {
+                return prev.filter((o) => o.id !== order.id)
+            } else {
+                return []
+            }
+        })
+
+        //TODO: Send order to backend to mark as paid
+        
+        setConfirmingPayment(false)
+    }
+
     function setOrderReady(order: Order) {
+
         setPendingOrders((prev) => {
             if (prev) {
                 return prev.filter((o) => o.id !== order.id)
@@ -66,6 +82,10 @@ function KitchenScreen() {
                 return [order]
             }
         })
+
+        //TODO: Send order to backend to mark as ready
+
+        setConfirmingReady(false)
     }
 
     useEffect(() => {
@@ -91,7 +111,9 @@ function KitchenScreen() {
           <small className="text-sm text-text-600">Essa ação não pode ser desfeita.</small>
           <div className="flex items-center justify-end w-full gap-x-4 mt-4">
             <button className="cursor-pointer bg-background-600 hover:bg-background-700 transition-colors duration-300 text-text-100 font-semibold py-2 px-4 rounded-lg text-sm" onClick={() => setConfirmingReady(false)}>Cancelar</button>
-            <button className="cursor-pointer bg-primary-600 hover:bg-primary-700 transition-colors duration-300 text-text-100 font-semibold py-2 px-4 rounded-lg text-sm">Pronto</button>
+            <button className="cursor-pointer bg-primary-600 hover:bg-primary-700 transition-colors duration-300 text-text-100 font-semibold py-2 px-4 rounded-lg text-sm" onClick={() => {
+              setOrderReady(selectedOrder!);
+            }}>Pronto</button>
           </div>
         </ModalContent>
       </Modal>
@@ -111,7 +133,9 @@ function KitchenScreen() {
           <small className="text-sm text-text-600">Essa ação não pode ser desfeita.</small>
           <div className="flex items-center justify-end w-full gap-x-4 mt-4">
             <button className="cursor-pointer bg-background-600 hover:bg-background-700 transition-colors duration-300 text-text-100 font-semibold py-2 px-4 rounded-lg text-sm" onClick={() => setConfirmingPayment(false)}>Cancelar</button>
-            <button className="cursor-pointer bg-primary-600 hover:bg-primary-700 transition-colors duration-300 text-text-100 font-semibold py-2 px-4 rounded-lg text-sm">Confirmar</button>
+            <button className="cursor-pointer bg-primary-600 hover:bg-primary-700 transition-colors duration-300 text-text-100 font-semibold py-2 px-4 rounded-lg text-sm" onClick={() => {
+              setOrderPaid(selectedOrder!);
+            }}>Confirmar</button>
           </div>
         </ModalContent>
       </Modal>
@@ -120,7 +144,7 @@ function KitchenScreen() {
         <p className="text-text-200">Pendentes:</p>
         <div className="h-fit min-h-82 w-full overflow-x-auto gap-x-4 flex flex-row py-4 px-2">
           <AnimatePresence>
-            {pendingOrders && pendingOrders.map((order) => (
+            {pendingOrders.length > 0 ? (pendingOrders.map((order) => (
             <motion.div
             key={order.id}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -128,6 +152,7 @@ function KitchenScreen() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             onClick={() => {
+              setSelectedOrder(order)
               setConfirmingReady(true)
             }} className="bg-background-950 hover:bg-background-800 transition-colors cursor-pointer duration-300 w-96 min-w-96 max-h-96 h-fit rounded-lg shadow-md flex flex-col items-start justify-evenly p-4 gap-y-6">
                 <div>
@@ -163,14 +188,18 @@ function KitchenScreen() {
                         })}</p>
                 </div>
             </motion.div>
-            ))}
+            ))) : (
+              <div className="w-full min-h-min flex items-center justify-center">
+                <h2 className="text-text-600 text-sm font-bold">Nenhum pedido pendente</h2>
+              </div>
+            )}
           </AnimatePresence>
         </div>
         <hr className="my-4 text-text-800"/>
         <p className="text-text-200">Concluídos:</p>
-        <div className="h-fit w-full overflow-x-auto gap-x-4 flex flex-row py-4 px-2">
+        <div className="h-fit min-h-82 w-full overflow-x-auto gap-x-4 flex flex-row py-4 px-2">
             <AnimatePresence>
-            {completedOrders && completedOrders.map((order) => (
+            {completedOrders.length > 0 ? (completedOrders.map((order) => (
             <motion.div
             key={order.id}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -178,8 +207,8 @@ function KitchenScreen() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             onClick={() => {
-              setConfirmingReady(true)
-              setOrderReady(order)
+              setSelectedOrder(order)
+              setConfirmingPayment(true)
             }} className="bg-background-950 hover:bg-background-800 transition-colors cursor-pointer duration-300 w-96 min-w-96 max-h-96 h-fit rounded-lg shadow-md flex flex-col items-start justify-evenly p-4 gap-y-6">
                 <div>
                     <h2 className="text-text-100 text-lg font-bold">Pedido #{order.id}</h2>
@@ -214,7 +243,11 @@ function KitchenScreen() {
                         })}</p>
                 </div>
             </motion.div>
-            ))}
+            ))) : (
+              <div className="w-full min-h-min flex items-center justify-center">
+                <h2 className="text-text-600 text-sm font-bold">Nenhum pedido concluído</h2>
+              </div>
+            )}
           </AnimatePresence>
         </div>
       </div>
