@@ -1,19 +1,20 @@
 import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-  type ColumnFiltersState,
-  type PaginationState,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    useReactTable,
+    type ColumnFiltersState,
+    type PaginationState,
 } from '@tanstack/react-table'
 import { useState, type ReactNode } from 'react'
 import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
 } from 'react-feather'
+import { useForm, type RegisterOptions } from 'react-hook-form'
 import { Modal, ModalContent } from '~/components/Modal'
 import Skeleton from '~/components/Skeleton'
 import { defaultMenuColumns } from '~/functions/tables.tsx'
@@ -43,6 +44,46 @@ function PaginationButton({
   )
 }
 
+function Input({
+  label,
+  type,
+  id,
+  register,
+  register_options,
+  placeholder,
+  onChange,
+  hint,
+  error,
+}: {
+  label: string
+  type: string
+  id: string
+  register: any
+  hint?: string
+  placeholder?: string
+  register_options?: RegisterOptions
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  error?: string
+}) {
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <label htmlFor={id} className="text-sm font-normal text-text-500">
+        {label}
+      </label>
+    <input
+        type={type}
+        id={id}
+        placeholder={placeholder}
+        onChange={onChange}
+        {...register(id, { ...register_options })}
+        className="p-2 bg-background-900 h-10 min-w-72 text-sm text-text-50 rounded-sm outline-none focus:ring-2 transition-all duration-200 ring-accent-500"
+    />
+    {hint && <span className="text-xs text-text-500">{hint}</span>}
+    {error && <span className="text-red-500 text-xs">{error}</span>}
+    </div>
+  )
+}
+
 function Menu() {
   const [isAddingItem, setIsAddingItem] = useState(false)
   const [pagination, setPagination] = useState<PaginationState>({
@@ -65,6 +106,20 @@ function Menu() {
       isAvailable: true,
     },
   ])
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<TProduct>()
+
+    const onSubmit = (data: TProduct) => {
+        data.isAvailable = true
+        setData((prev) => [...prev, data])
+        setIsAddingItem(false)
+
+        // TODO: Add API call to add item to database using Axios
+    }
 
   const table = useReactTable({
     columns: defaultMenuColumns,
@@ -90,39 +145,68 @@ function Menu() {
         open={isAddingItem}
       >
         <ModalContent>
-          <div className="flex flex-col items-start justify-center h-full gap-y-4">
-            <h1 className="text-3xl font-bold text-text-100">Adicionar item</h1>
-            <div className="flex flex-col items-start justify-center w-full gap-y-4">
-              <input
-                type="text"
-                placeholder="Nome"
-                className="w-full text-sm bg-background-800 text-text-50 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
-              />
-              <input
-                type="text"
-                placeholder="Descrição"
-                className="w-full text-sm bg-background-800 text-text-50 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
-              />
-              <input
-                type="text"
-                placeholder="Preço"
-                className="w-full text-sm bg-background-800 text-text-50 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
-              />
-              <input
-                type="text"
-                placeholder="Tipo"
-                className="w-full text-sm bg-background-800 text-text-50 rounded-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
-              />
-            </div>
-            <div className="flex items-center justify-end w-full gap-x-4">
-              <button className="px-4 py-2 bg-background-800 rounded-sm text-sm cursor-pointer hover:bg-background-700 transition-colors duration-300">
-                Cancelar
-              </button>
-              <button className="px-4 py-2 bg-primary-500 rounded-sm text-sm cursor-pointer hover:bg-primary-400 transition-colors duration-300">
-                Adicionar
-              </button>
-            </div>
-          </div>
+            <form className='flex flex-col items-start justify-between w-full h-full pt-4 gap-y-4' onSubmit={handleSubmit(onSubmit)}>
+                <h1 className='text-2xl font-bold text-text-100'>Adicionar item</h1>
+                <div className='w-full h-full flex flex-col items-start justify-start gap-y-4'>
+                    <Input
+                        label="Nome do item"
+                        type="text"
+                        id="name"
+                        register={register}
+                        register_options={{ required: true }}
+                        placeholder="Nome do item"
+                        error={errors.name?.message}
+                    />
+                    <Input
+                        label="Descrição"
+                        type="text"
+                        id="description"
+                        register={register}
+                        register_options={{ required: true }}
+                        placeholder="Descrição"
+                        error={errors.description?.message}
+                    />
+                    <Input
+                        label="Preço"
+                        type="string"
+                        id="price"
+                        register={register}
+                        register_options={{ required: true, valueAsNumber: true }}
+                        placeholder="Preço"
+                        hint='Digite o preço com "." (ex: 29.90)'
+                        error={errors.price?.message}
+                    />
+                    <Input
+                        label="Tipo"
+                        type="text"
+                        id="type"
+                        register={register}
+                        register_options={{ required: true }}
+                        placeholder="Tipo"
+                        error={errors.type?.message}
+                    />
+                </div>
+                <div className='w-full h-fit flex items-center justify-end gap-x-2'>
+                    <button
+                        type='submit'
+                        className='px-4 py-2 bg-primary-500 rounded-sm text-sm cursor-pointer hover:bg-primary-400 transition-colors duration-300'
+                        onClick={() => {
+                            setIsAddingItem(false)
+                        }}
+                    >
+                        Adicionar
+                    </button>
+                    <button
+                        className='px-4 py-2 bg-background-800 rounded-sm text-sm cursor-pointer hover:bg-background-700 transition-colors duration-300'
+                        onClick={() => {
+                            setIsAddingItem(false)
+                        }
+                        }
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            </form>
         </ModalContent>
       </Modal>
       <div className="flex justify-between w-full">
