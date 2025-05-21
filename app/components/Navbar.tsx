@@ -13,6 +13,11 @@ function Navbar() {
                             </Link>
                         </li>
                         <li>
+                            <Link to="/dashboard/menu" className="text-text-200 text-sm hover:text-text-100 transition-colors duration-300">
+                                Cardápio
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/dashboard/kitchen" className="text-text-200 text-sm hover:text-text-100 transition-colors duration-300">
                                 Cozinha
                             </Link>

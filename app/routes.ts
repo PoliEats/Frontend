@@ -5,5 +5,6 @@ export default [
 
     layout("routes/dashboard/_layout.tsx", [
         route("dashboard/kitchen", "routes/dashboard/kitchen.tsx"),
+        route("dashboard/menu", "routes/dashboard/menu.tsx"),
     ])
 ] satisfies RouteConfig;

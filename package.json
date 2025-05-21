@@ -12,6 +12,8 @@
   "dependencies": {
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
+    "@tanstack/react-table": "^8.21.3",
+    "axios": "^1.9.0",
     "clsx": "^2.1.1",
     "feather-icons": "^4.29.2",
     "isbot": "^5.1.27",

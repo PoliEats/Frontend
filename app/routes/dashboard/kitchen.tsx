@@ -1,3 +1,4 @@
+import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { Modal, ModalContent } from "~/components/Modal"
@@ -8,29 +9,7 @@ function KitchenScreen() {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
     const [confirmingReady, setConfirmingReady] = useState<boolean>(false)
     const [confirmingPayment, setConfirmingPayment] = useState<boolean>(false)
-    const [pendingOrders, setPendingOrders] = useState<Order[]>([
-      {
-        id: 1,
-        name: "Pedido 1",
-        status: "pending",
-        total: 100,
-        items: [
-          {
-            name: "Item 1",
-            quantity: 2,
-            price: 50,
-            observation: "Sem cebola",
-          },
-          {
-            name: "Item 2",
-            quantity: 1,
-            price: 50,
-          },
-        ],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }
-    ])
+    const [pendingOrders, setPendingOrders] = useState<Order[]>([])
     const [completedOrders, setCompletedOrders] = useState<Order[]>([])
 
     function handleNewOrder(data: string) {
@@ -96,6 +75,18 @@ function KitchenScreen() {
         getNotification()
 
         socket.on("new_order", (data) => handleNewOrder(data))
+
+        async function fetchOrders() {
+          await axios.get("http://localhost:8000/orders").then((res) => {
+            const orders = res.data.data;
+            const pendingOrders = orders.filter((order: Order) => order.status === "pending");
+            const completedOrders = orders.filter((order: Order) => order.status === "completed");
+            setPendingOrders(pendingOrders);
+            setCompletedOrders(completedOrders);
+          });
+        }
+
+        fetchOrders()
 
         return () => {
             socket.off("new_order", (data) => handleNewOrder(data))
