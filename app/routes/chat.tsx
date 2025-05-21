@@ -1,104 +1,105 @@
-import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import { Book, Menu, Send, X } from "react-feather";
-import { ChatBubble, ChatBubbleOptions } from "~/components/ChatBubble";
-import DarkModeToggle from "~/components/DarkModeToggle";
-import { Drawer, DrawerContent, DrawerTopbar } from "~/components/Drawer";
-import FilterOption from "~/components/FilterOption";
-import MenuItem from "~/components/MenuItem";
-import { Modal, ModalContent } from "~/components/Modal";
-import QuickMessage from "~/components/QuickMessage";
-import { socket } from "~/functions/functions";
+import { AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { Book, Menu, Send, X } from 'react-feather'
+import { ChatBubble, ChatBubbleOptions } from '~/components/ChatBubble'
+import DarkModeToggle from '~/components/DarkModeToggle'
+import { Drawer, DrawerContent, DrawerTopbar } from '~/components/Drawer'
+import FilterOption from '~/components/FilterOption'
+import MenuItem from '~/components/MenuItem'
+import { Modal, ModalContent } from '~/components/Modal'
+import QuickMessage from '~/components/QuickMessage'
+import { socket } from '~/functions/functions'
+import type { Message, Order, TQuickMessage } from '~/functions/interfaces'
 
 function DrawerMenu() {
   const mockItems = [
     {
       image:
-        "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      name: "Filé de frango",
+        'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      name: 'Filé de frango',
       price: 25,
-      description: "Delicioso filé de frango grelhado com temperos especiais.",
-      category: "Prato Principal",
+      description: 'Delicioso filé de frango grelhado com temperos especiais.',
+      category: 'Prato Principal',
     },
     {
       image:
-        "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      name: "Filé de peixe",
+        'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      name: 'Filé de peixe',
       price: 30,
-      description: "Delicioso filé de peixe grelhado com temperos especiais.",
-      category: "Prato Principal",
+      description: 'Delicioso filé de peixe grelhado com temperos especiais.',
+      category: 'Prato Principal',
     },
     {
       image:
-        "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      name: "X-Burguer",
+        'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      name: 'X-Burguer',
       price: 20,
-      description: "Delicioso X-Burguer com queijo, alface e tomate.",
-      category: "Lanches",
+      description: 'Delicioso X-Burguer com queijo, alface e tomate.',
+      category: 'Lanches',
     },
     {
       image:
-        "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      name: "Batata frita",
+        'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      name: 'Batata frita',
       price: 10,
-      description: "Deliciosa batata frita crocante.",
-      category: "Acompanhamentos",
+      description: 'Deliciosa batata frita crocante.',
+      category: 'Acompanhamentos',
     },
-  ];
+  ]
 
-  const [nameFilter, setNameFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState([]);
-  const [displayedItems, setDisplayedItems] = useState(mockItems);
+  const [nameFilter, setNameFilter] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState<string[]>([])
+  const [displayedItems, setDisplayedItems] = useState(mockItems)
 
   const mockFilters = [
     {
-      title: "Pizzas",
+      title: 'Pizzas',
       onClick: () => {
-        console.log("Pizzas");
+        console.log('Pizzas')
       },
     },
     {
-      title: "Bebidas",
+      title: 'Bebidas',
       onClick: () => {
-        console.log("Bebidas");
+        console.log('Bebidas')
       },
     },
     {
-      title: "Acompanhamentos",
+      title: 'Acompanhamentos',
       onClick: () => {
-        console.log("Acompanhamentos");
+        console.log('Acompanhamentos')
       },
     },
     {
-      title: "Prato Principal",
+      title: 'Prato Principal',
       onClick: () => {
-        console.log("Prato Principal");
+        console.log('Prato Principal')
       },
     },
     {
-      title: "Lanches",
+      title: 'Lanches',
       onClick: () => {
-        console.log("Lanches");
+        console.log('Lanches')
       },
     },
-  ];
+  ]
 
   useEffect(() => {
     const filteredItems = mockItems.filter((item) => {
       return (
         item.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
         (categoryFilter.length === 0 || categoryFilter.includes(item.category))
-      );
-    });
+      )
+    })
 
-    setDisplayedItems(filteredItems);
-  }, [nameFilter, categoryFilter]);
+    setDisplayedItems(filteredItems)
+  }, [nameFilter, categoryFilter])
 
   return (
     <div className="w-full h-full flex flex-col gap-y-4 p-4">
       <input
         onChange={(e) => {
-          setNameFilter(e.target.value);
+          setNameFilter(e.target.value)
         }}
         type="text"
         className="w-full h-10 bg-zinc-900 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-[#1F8B96] transition-all duration-300 text-sm"
@@ -112,9 +113,9 @@ function DrawerMenu() {
             onClick={() => {
               categoryFilter.includes(filter.title)
                 ? setCategoryFilter(
-                  categoryFilter.filter((item) => item !== filter.title),
-                )
-                : setCategoryFilter([...categoryFilter, filter.title]);
+                    categoryFilter.filter((item) => item !== filter.title)
+                  )
+                : setCategoryFilter([...categoryFilter, filter.title])
             }}
             isSelected={categoryFilter.includes(filter.title)}
           />
@@ -137,193 +138,161 @@ function DrawerMenu() {
         </div>
       </div>
     </div>
-  );
-}
-
-interface Option {
-  label: string;
-  onClick: () => void;
-}
-
-interface Message {
-  message: string;
-  sender: "user" | "bot";
-  timestamp: string;
-  options?: Option[];
-  loading?: boolean;
-}
-
-interface TQuickMessage {
-  title: string;
-  message: string;
-  disabled?: boolean;
-  onClick?: () => void;
-}
-
-interface OrderItem {
-  name: string;
-  quantity: number;
-  price: number;
-  observation?: string;
-}
-
-interface Order {
-  id: number;
-  name: string;
-  status: "pending" | "canceled" | "fullfilled";
-  total: number;
-  items: OrderItem[];
+  )
 }
 
 function Chat() {
-  const [userInput, setUserInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newOrder, setNewOrder] = useState<Order>();
+  const [userInput, setUserInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMenuDrawerOpen, setIsMenuDrawerOpen] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([])
+  const [newOrder, setNewOrder] = useState<Order>()
 
   const quickMessages: TQuickMessage[] = [
     {
-      title: "Ver cardápio",
-      message: "Ver cardápio",
+      title: 'Ver cardápio',
+      message: 'Ver cardápio',
       onClick: () =>
         setMessages((prevMessages) => [
           ...prevMessages,
           {
-            message: "Ver cardápio",
-            sender: "user",
+            message: 'Ver cardápio',
+            sender: 'user',
             timestamp: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
+              hour: '2-digit',
+              minute: '2-digit',
             }),
           },
           {
-            message: "Aqui está o cardápio.",
-            sender: "bot",
+            message: 'Aqui está o cardápio.',
+            sender: 'bot',
             timestamp: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
+              hour: '2-digit',
+              minute: '2-digit',
             }),
           },
         ]),
     },
     {
-      title: "Adicionar pizza",
-      message: "Adicionar pizza",
+      title: 'Adicionar pizza',
+      message: 'Adicionar pizza',
       onClick: () =>
         setMessages((prevMessages) => [
           ...prevMessages,
           {
-            message: "Adicionar pizza",
-            sender: "user",
+            message: 'Adicionar pizza',
+            sender: 'user',
             timestamp: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
+              hour: '2-digit',
+              minute: '2-digit',
             }),
           },
           {
-            message: "Aqui está o cardápio de pizzas.",
-            sender: "bot",
+            message: 'Aqui está o cardápio de pizzas.',
+            sender: 'bot',
             timestamp: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
+              hour: '2-digit',
+              minute: '2-digit',
             }),
           },
         ]),
     },
     {
-      title: "Adicionar bebida",
-      message: "Adicionar bebida",
+      title: 'Adicionar bebida',
+      message: 'Adicionar bebida',
       onClick: () =>
         setMessages((prevMessages) => [
           ...prevMessages,
           {
-            message: "Adicionar bebida",
-            sender: "user",
+            message: 'Adicionar bebida',
+            sender: 'user',
             timestamp: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
+              hour: '2-digit',
+              minute: '2-digit',
             }),
           },
           {
-            message: "Aqui está o cardápio de bebidas.",
-            sender: "bot",
+            message: 'Aqui está o cardápio de bebidas.',
+            sender: 'bot',
             timestamp: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
+              hour: '2-digit',
+              minute: '2-digit',
             }),
           },
         ]),
     },
-  ];
+  ]
 
   useEffect(() => {
     // Scroll to the bottom of the chat container when a new message is added
-    const chatContainer = document.getElementById("chat-container");
+    const chatContainer = document.getElementById('chat-container')
     if (chatContainer) {
-      chatContainer.scrollTop = chatContainer.scrollHeight -
-        chatContainer.clientHeight;
+      chatContainer.scrollTop =
+        chatContainer.scrollHeight - chatContainer.clientHeight
     }
-  }, [messages]);
+  }, [messages])
 
-  function orderConfirmation({
-    confirm,
-  }: {
-    confirm: boolean;
-  }) {
+  function orderConfirmation({ confirm }: { confirm: boolean }) {
     if (confirm) {
-      socket.emit("order_confirmation", JSON.stringify({ orderId: newOrder?.id, type: "confirm" }));
+      socket.emit(
+        'order_confirmation',
+        JSON.stringify({ orderId: newOrder?.id, type: 'confirm' })
+      )
     } else {
-      socket.emit("order_confirmation", JSON.stringify({ orderId: newOrder?.id, type: "cancel" }));
+      socket.emit(
+        'order_confirmation',
+        JSON.stringify({ orderId: newOrder?.id, type: 'cancel' })
+      )
     }
   }
 
   function newMessageHandler(message: string) {
     const newMessage: {
-      type: string;
-      message: string;
-      order?: Order;
-    } = JSON.parse(message);
+      type: string
+      message: string
+      order?: Order
+    } = JSON.parse(message)
 
-    console.log(newMessage);
+    console.log(newMessage)
 
-    if (newMessage.type == "order") {
-      setNewOrder(newMessage.order);
-      setIsModalOpen(true);
-      return;
+    if (newMessage.type == 'order') {
+      setNewOrder(newMessage.order)
+      setIsModalOpen(true)
+      return
     }
 
     setMessages((prevMessages) => [
       ...prevMessages,
       {
         message: newMessage.message,
-        sender: "bot",
-        options: newMessage.type == "welcome"
-          ? [
-            {
-              label: "Ver cardápio",
-              onClick: () => {
-                setIsMenuDrawerOpen(true);
-              },
-            },
-          ]
-          : undefined,
+        sender: 'bot',
+        options:
+          newMessage.type == 'welcome'
+            ? [
+                {
+                  label: 'Ver cardápio',
+                  onClick: () => {
+                    setIsMenuDrawerOpen(true)
+                  },
+                },
+              ]
+            : undefined,
         timestamp: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
+          hour: '2-digit',
+          minute: '2-digit',
         }),
       },
-    ]);
-    setIsLoading(false);
+    ])
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    socket.on("message", newMessageHandler);
+    socket.on('message', newMessageHandler)
     return () => {
-      socket.off("message", newMessageHandler);
-    };
-  }, []);
+      socket.off('message', newMessageHandler)
+    }
+  }, [])
 
   return (
     <main className="w-full h-svh xl:py-4">
@@ -334,7 +303,7 @@ function Chat() {
               size={20}
               className="cursor-pointer hover:text-[#1F8B96] transition-colors duration-300"
               onClick={() => {
-                setIsModalOpen(false);
+                setIsModalOpen(false)
               }}
             />
             <p className="text-md font-bold text-zinc-200 ml-4">
@@ -357,9 +326,9 @@ function Chat() {
                     )}
                   </div>
                   <p className="text-sm text-zinc-500">
-                    {item.price.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
+                    {item.price.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
                     })}
                   </p>
                 </div>
@@ -370,17 +339,17 @@ function Chat() {
           <div className="w-full h-fit min-h-12 flex flex-row items-center justify-between font-bold">
             <p className="text-sm">Total</p>
             <p className="text-sm">
-              {newOrder?.total.toLocaleString("pt-BR", {
-                currency: "BRL",
-                style: "currency",
+              {newOrder?.total.toLocaleString('pt-BR', {
+                currency: 'BRL',
+                style: 'currency',
               })}
             </p>
           </div>
           <div className="w-full h-fit flex flex-row items-center justify-end gap-x-2">
             <button
               onClick={() => {
-                orderConfirmation({ confirm: false });
-                setIsModalOpen(false);
+                orderConfirmation({ confirm: false })
+                setIsModalOpen(false)
               }}
               className="bg-secondary-500 text-sm p-4 py-2 hover:bg-zinc-700 duration-300 cursor-pointer rounded-lg transition-all"
             >
@@ -388,8 +357,8 @@ function Chat() {
             </button>
             <button
               onClick={() => {
-                orderConfirmation({ confirm: true });
-                setIsModalOpen(false);
+                orderConfirmation({ confirm: true })
+                setIsModalOpen(false)
               }}
               className="bg-[#15747f] text-sm p-4 py-2 hover:bg-[#1F8B96] duration-300 cursor-pointer rounded-lg transition-all"
             >
@@ -417,7 +386,7 @@ function Chat() {
           <div className="hidden md:flex flex-col gap-y-8 text-text-200">
             <button
               onClick={() => {
-                setIsMenuDrawerOpen(true);
+                setIsMenuDrawerOpen(true)
               }}
               className='className="hidden md:block cursor-pointer hover:text-[#1F8B96] transition-colors duration-300'
             >
@@ -450,7 +419,7 @@ function Chat() {
                 sender="bot"
                 loading={true}
                 index={0}
-                timestamp={""}
+                timestamp={''}
               />
             )}
           </div>
@@ -471,32 +440,32 @@ function Chat() {
           )}
           <form
             onSubmit={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
+              e.stopPropagation()
+              e.preventDefault()
 
               setMessages((prevMessages) => [
                 ...prevMessages,
                 {
                   message: userInput,
-                  sender: "user",
+                  sender: 'user',
                   timestamp: new Date().toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
+                    hour: '2-digit',
+                    minute: '2-digit',
                   }),
                 },
-              ]);
-              setIsLoading(true);
+              ])
+              setIsLoading(true)
 
-              socket.emit("message", userInput);
+              socket.emit('message', userInput)
 
-              setUserInput("");
+              setUserInput('')
             }}
             className="w-full h-fit flex flex-row gap-x-4 items-center justify-between"
           >
             <input
               type="text"
               onChange={(e) => {
-                setUserInput(e.target.value);
+                setUserInput(e.target.value)
               }}
               className="w-full h-10 bg-background-950 rounded-lg px-4 focus:outline-none focus:ring-2 text-text-200 focus:ring-[#1F8B96] transition-all duration-300 text-sm"
               placeholder="Digite sua mensagem aqui..."
@@ -515,7 +484,7 @@ function Chat() {
         </div>
       </div>
     </main>
-  );
+  )
 }
 
-export default Chat;
+export default Chat

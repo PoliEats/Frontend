@@ -1,28 +1,28 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   createContext,
   useContext,
   type Dispatch,
   type ReactNode,
   type SetStateAction,
-} from "react";
-import { X } from "react-feather";
+} from 'react'
+import { X } from 'react-feather'
 
 interface DrawerContext {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean
+  setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const DrawerContext = createContext<DrawerContext | undefined>(undefined);
+const DrawerContext = createContext<DrawerContext | undefined>(undefined)
 
 function Drawer({
   children,
   isOpen,
   setIsOpen,
 }: {
-  children: ReactNode;
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode
+  isOpen: boolean
+  setIsOpen: Dispatch<SetStateAction<boolean>>
 }) {
   return (
     <DrawerContext.Provider value={{ isOpen, setIsOpen }}>
@@ -31,17 +31,17 @@ function Drawer({
           <motion.div
             ref={(el) => {
               if (el) {
-                el.addEventListener("click", (e) => {
+                el.addEventListener('click', (e) => {
                   if (e.target === el) {
-                    setIsOpen(false);
+                    setIsOpen(false)
                   }
-                });
+                })
               }
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="fixed top-0 right-0 w-full h-full bg-black/40 z-50"
           >
             {children}
@@ -49,31 +49,31 @@ function Drawer({
         )}
       </AnimatePresence>
     </DrawerContext.Provider>
-  );
+  )
 }
 
 function DrawerContent({ children }: { children: ReactNode }) {
-  const context = useContext(DrawerContext);
+  const context = useContext(DrawerContext)
   if (!context) {
-    throw new Error("DrawerContent must be used within a Drawer");
+    throw new Error('DrawerContent must be used within a Drawer')
   }
   return (
     <motion.div
-      initial={{ x: "100%" }}
+      initial={{ x: '100%' }}
       animate={{ x: 0 }}
-      exit={{ x: "100%" }}
+      exit={{ x: '100%' }}
       transition={{ duration: 0.3 }}
       className="fixed top-0 right-0 w-6/7 md:w-2xl lg:w-1/3 h-full bg-zinc-950 z-50"
     >
       {children}
     </motion.div>
-  );
+  )
 }
 
 function DrawerTopbar({ children }: { children: ReactNode }) {
-  const context = useContext(DrawerContext);
+  const context = useContext(DrawerContext)
   if (!context) {
-    throw new Error("DrawerTopbar must be used within a Drawer");
+    throw new Error('DrawerTopbar must be used within a Drawer')
   }
 
   return (
@@ -86,7 +86,7 @@ function DrawerTopbar({ children }: { children: ReactNode }) {
       </button>
       <p className="text-xl">{children}</p>
     </div>
-  );
+  )
 }
 
-export { Drawer, DrawerContent, DrawerTopbar };
+export { Drawer, DrawerContent, DrawerTopbar }
