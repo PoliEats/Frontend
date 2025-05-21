@@ -8,9 +8,28 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-[#0F0F0F] text-white;
+  height: 100%;
+  margin: 0;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+@keyframes marquee-track {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
+
+.animate-marquee-track {
+  display: flex;
+  animation: marquee-track 9s linear infinite;
+  white-space: nowrap;
+}
+
+.marquee-text {
+  display: inline-block;
+  padding: 0 1rem;
+}
+
