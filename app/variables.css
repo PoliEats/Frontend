@@ -1,0 +1,23 @@
+:root {
+    --background: #E5EDEF;
+    --text: #1D1D1D;
+    --foreground: #FFFFFF;
+    --text-muted: #8D8D8D;
+    --accent: #1EB4C3;
+    --accent-hover: #1F8B96;
+    --navbar: #FFFFFF;
+}
+
+.dark {
+    --background: #0F0F0F;
+    --text: #FAFAFA;
+    --foreground: #1D1D1D;
+    --navbar: #0a0a0a;
+} 
+
+.light {
+    --background: #E5EDEF;
+    --text: #1D1D1D;
+    --foreground: #FFFFFF;
+    --navbar: #FFFFFF;
+}
