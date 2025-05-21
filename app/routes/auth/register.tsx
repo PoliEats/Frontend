@@ -1,5 +1,3 @@
-import React from 'react'
-import '/app/variables.css'
 
 function Register() {
   return (
