@@ -34,3 +34,8 @@ export interface Order {
   createdAt: string
   updatedAt: string
 }
+
+export interface Route {
+  path: string
+  name: string
+}
