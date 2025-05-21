@@ -8,6 +8,3 @@ export default [
         route("/auth/register", "routes/auth/register.tsx")
     ])
 ] satisfies RouteConfig;
-
-
-
