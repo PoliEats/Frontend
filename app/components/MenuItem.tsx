@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
 function MenuItem({
   image,
@@ -8,12 +8,12 @@ function MenuItem({
   category,
   key,
 }: {
-  image: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  key: number;
+  image: string
+  name: string
+  description: string
+  price: number
+  category: string
+  key: number
 }) {
   return (
     <motion.section
@@ -35,7 +35,7 @@ function MenuItem({
         </div>
       </motion.div>
     </motion.section>
-  );
+  )
 }
 
-export default MenuItem;
+export default MenuItem

@@ -1,8 +1,8 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 :root {
@@ -17,7 +17,7 @@
   --text-800: #333333;
   --text-900: #1a1a1a;
   --text-950: #0d0d0d;
-  
+
   --background-50: #f1f1f4;
   --background-100: #e3e3e8;
   --background-200: #c7c7d1;
@@ -29,7 +29,7 @@
   --background-800: #2e2e38;
   --background-900: #17171c;
   --background-950: #0b0b0e;
-  
+
   --primary-50: #edf7f8;
   --primary-100: #daeff1;
   --primary-200: #b5dee3;
@@ -41,7 +41,7 @@
   --primary-800: #1c454a;
   --primary-900: #0e2325;
   --primary-950: #071112;
-  
+
   --secondary-50: #f2f2f3;
   --secondary-100: #e4e4e7;
   --secondary-200: #cacace;
@@ -53,7 +53,7 @@
   --secondary-800: #313135;
   --secondary-900: #18181b;
   --secondary-950: #0c0c0d;
-  
+
   --accent-50: #e8fafc;
   --accent-100: #d1f6fa;
   --accent-200: #a4ecf4;
@@ -65,7 +65,6 @@
   --accent-800: #0b535b;
   --accent-900: #052a2e;
   --accent-950: #031517;
-  
 }
 
 [data-theme='dark'] {
@@ -80,7 +79,7 @@
   --text-800: #333333;
   --text-900: #1a1a1a;
   --text-950: #0d0d0d;
-  
+
   --background-50: #f1f1f4;
   --background-100: #e3e3e8;
   --background-200: #c7c7d1;
@@ -92,7 +91,7 @@
   --background-800: #2e2e38;
   --background-900: #17171c;
   --background-950: #0b0b0e;
-  
+
   --primary-50: #edf7f8;
   --primary-100: #daeff1;
   --primary-200: #b5dee3;
@@ -104,7 +103,7 @@
   --primary-800: #1c454a;
   --primary-900: #0e2325;
   --primary-950: #071112;
-  
+
   --secondary-50: #f2f2f3;
   --secondary-100: #e4e4e7;
   --secondary-200: #cacace;
@@ -116,7 +115,7 @@
   --secondary-800: #313135;
   --secondary-900: #18181b;
   --secondary-950: #0c0c0d;
-  
+
   --accent-50: #e8fafc;
   --accent-100: #d1f6fa;
   --accent-200: #a4ecf4;
@@ -128,7 +127,6 @@
   --accent-800: #0b535b;
   --accent-900: #052a2e;
   --accent-950: #031517;
-  
 }
 
 [data-theme='dark'] {
@@ -143,7 +141,7 @@
   --text-800: #cccccc;
   --text-900: #e6e6e6;
   --text-950: #f2f2f2;
-  
+
   --background-50: #0b0b0e;
   --background-100: #17171c;
   --background-200: #2e2e38;
@@ -155,7 +153,7 @@
   --background-800: #c7c7d1;
   --background-900: #e3e3e8;
   --background-950: #f1f1f4;
-  
+
   --primary-50: #071112;
   --primary-100: #0e2325;
   --primary-200: #1c454a;
@@ -167,7 +165,7 @@
   --primary-800: #b5dee3;
   --primary-900: #daeff1;
   --primary-950: #edf7f8;
-  
+
   --secondary-50: #0c0c0d;
   --secondary-100: #18181b;
   --secondary-200: #313135;
@@ -179,7 +177,7 @@
   --secondary-800: #cacace;
   --secondary-900: #e4e4e7;
   --secondary-950: #f2f2f3;
-  
+
   --accent-50: #031517;
   --accent-100: #052a2e;
   --accent-200: #0b535b;
