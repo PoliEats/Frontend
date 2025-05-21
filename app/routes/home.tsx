@@ -1,16 +1,15 @@
-import React from 'react';
-import celular from '../assets/celular.png';
-import app from '../assets/app.png';
-import Poliedro from '../assets/Poliedro.png';
-import PoliEats from '../assets/PoliEats.png';
-import IMT from '../assets/IMT.png';
-import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import React from 'react'
+import celular from '../assets/celular.png'
+import app from '../assets/app.png'
+import Poliedro from '../assets/Poliedro.png'
+import PoliEats from '../assets/PoliEats.png'
+import IMT from '../assets/IMT.png'
+import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa'
 
 function LandingPage() {
   return (
     <div className="min-h-screen bg-[#0F0F0F] text-white">
       <div className="flex flex-col gap-24 px-6 lg:px-20 font-lato mt-12 bg-[#0F0F0F]">
-
         {/* primeiro bloco: título e imagem */}
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="space-y-6 max-w-lg w-full lg:w-1/2">
@@ -24,7 +23,10 @@ function LandingPage() {
           <div className="w-full lg:w-1/2 mt-8 lg:mt-0 relative flex justify-center items-center">
             <div
               className="absolute w-[700px] h-[700px] rounded-full z-0 filter blur-2xl lg:block hidden"
-              style={{ background: 'radial-gradient(circle at center, #269DA9 0%, #0F0F0F 100%)' }}
+              style={{
+                background:
+                  'radial-gradient(circle at center, #269DA9 0%, #0F0F0F 100%)',
+              }}
             ></div>
             <img
               src={celular}
@@ -42,8 +44,12 @@ function LandingPage() {
 
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="w-full lg:w-1/2 mt-8 lg:mt-4 relative flex justify-center items-center">
-            <div className="absolute w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[700px] lg:h-[700px] filter blur-2xl block rounded-full"
-              style={{ background: 'radial-gradient(circle at center, #269DA9 0%, #0F0F0F 100%)' }}
+            <div
+              className="absolute w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[700px] lg:h-[700px] filter blur-2xl block rounded-full"
+              style={{
+                background:
+                  'radial-gradient(circle at center, #269DA9 0%, #0F0F0F 100%)',
+              }}
             ></div>
             <img
               src={app}
@@ -54,20 +60,22 @@ function LandingPage() {
 
           <div className="space-y-6 max-w-lg w-full lg:w-1/2 mt-16 lg:mt-4 text-center lg:text-left 2xl:transform 2xl:translate-x-[-30%]">
             <h1 className="text-[28px] lg:text-[34px] leading-tight">
-              Quer evitar filas e pedir seu prato favorito em segundos? Converse com o <b>PoliEats!</b>
+              Quer evitar filas e pedir seu prato favorito em segundos? Converse
+              com o <b>PoliEats!</b>
             </h1>
           </div>
-
         </div>
       </div>
 
       <div className="w-full mt-48 hidden lg:block overflow-hidden relative h-[60px]">
         <div className="animate-marquee-track absolute whitespace-nowrap">
           <span className="text-5xl font-medium text-white inline-block mx-8">
-            Faça pedidos, verifique status e receba ofertas exclusivas. Tudo pelo chat!
+            Faça pedidos, verifique status e receba ofertas exclusivas. Tudo
+            pelo chat!
           </span>
           <span className="text-5xl font-medium text-white inline-block mx-8">
-            Faça pedidos, verifique status e receba ofertas exclusivas. Tudo pelo chat!
+            Faça pedidos, verifique status e receba ofertas exclusivas. Tudo
+            pelo chat!
           </span>
         </div>
       </div>
@@ -79,18 +87,44 @@ function LandingPage() {
       </div>
 
       <div className="relative mt-18">
-        <svg viewBox="0 0 1440 150" className="w-full h-[100px] lg:h-[120px]" preserveAspectRatio="none">
-          <path fill="#1EB4C3" className="block lg:hidden" d="M0,100 C480,50 960,150 1440,100 L1440,150 L0,150 Z" />
-          <path fill="#1EB4C3" className="hidden lg:block" d="M0,100 C480,-50 960,250 1440,100 L1440,150 L0,150 Z" />
+        <svg
+          viewBox="0 0 1440 150"
+          className="w-full h-[100px] lg:h-[120px]"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#1EB4C3"
+            className="block lg:hidden"
+            d="M0,100 C480,50 960,150 1440,100 L1440,150 L0,150 Z"
+          />
+          <path
+            fill="#1EB4C3"
+            className="hidden lg:block"
+            d="M0,100 C480,-50 960,250 1440,100 L1440,150 L0,150 Z"
+          />
         </svg>
       </div>
 
       <div className="bg-[#1EB4C3] text-[#0f0f0f] text-center py-8">
-        <h1 className="text-[36px] lg:text-[64px]"><b>Parceiros</b></h1>
+        <h1 className="text-[36px] lg:text-[64px]">
+          <b>Parceiros</b>
+        </h1>
         <div className="flex flex-col items-center justify-center gap-8 md:flex-row md:justify-center md:gap-32">
-          <img src={Poliedro} alt="Parceiro 1" className="w-60 h-60 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2" />
-          <img src={PoliEats} alt="Parceiro 3" className="w-48 h-48 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2" />
-          <img src={IMT} alt="Parceiro 2" className="w-48 h-48 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2" />
+          <img
+            src={Poliedro}
+            alt="Parceiro 1"
+            className="w-60 h-60 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2"
+          />
+          <img
+            src={PoliEats}
+            alt="Parceiro 3"
+            className="w-48 h-48 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2"
+          />
+          <img
+            src={IMT}
+            alt="Parceiro 2"
+            className="w-48 h-48 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2"
+          />
         </div>
       </div>
 
@@ -98,7 +132,9 @@ function LandingPage() {
         <div className="flex flex-col lg:flex-row justify-between gap-12 px-6 lg:px-32 text-lg lg:text-xl">
           <div className="bg-white/20 rounded-2xl p-8 backdrop-blur-md w-full lg:w-1/2 space-y-6 shadow-lg transition-transform duration-300 transform hover:-translate-y-2">
             <h2 className="text-3xl font-bold ">Horário de Atendimento</h2>
-            <p>Segunda a sexta, das <b>8h às 18h</b></p>
+            <p>
+              Segunda a sexta, das <b>8h às 18h</b>
+            </p>
             <p>Entre em contato pelo WhatsApp para mais informações.</p>
             <div className="w-full h-64 rounded-xl overflow-hidden ">
               <iframe
@@ -118,13 +154,32 @@ function LandingPage() {
             <p>Restaurante Poliedro – CNPJ XX.XXX.XXX/0001-XX</p>
             <p>restaurantepoli@gmail.com</p>
             <p>
-              Rua do Poliedro – número<br />
+              Rua do Poliedro – número
+              <br />
               Bairro – São Paulo – SP
             </p>
             <div className="flex gap-6 mt-6 text-3xl">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-              <a href="https://wa.me/55119XXXX-XXXX" target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaFacebookF />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaInstagram />
+              </a>
+              <a
+                href="https://wa.me/55119XXXX-XXXX"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaWhatsapp />
+              </a>
             </div>
           </div>
         </div>
@@ -132,9 +187,8 @@ function LandingPage() {
           © 2025 PoliEats – Todos os direitos reservados.
         </div>
       </div>
-
     </div>
-  );
+  )
 }
 
-export default LandingPage;
+export default LandingPage

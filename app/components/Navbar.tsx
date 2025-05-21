@@ -5,21 +5,21 @@ import type { Route } from '~/functions/interfaces'
 import DarkModeToggle from './DarkModeToggle'
 
 function Navbar() {
-  const location = useLocation();
+  const location = useLocation()
 
   const routes: Route[] = [
     {
       path: '/dashboard',
-      name: 'Início'
+      name: 'Início',
     },
     {
       path: '/dashboard/menu',
-      name: 'Cardápio'
+      name: 'Cardápio',
     },
     {
       path: '/dashboard/kitchen',
-      name: 'Cozinha'
-    }
+      name: 'Cozinha',
+    },
   ]
 
   return (
@@ -31,9 +31,12 @@ function Navbar() {
             <li key={route.path}>
               <Link
                 to={route.path}
-                className={cn("text-text-400 text-sm hover:text-text-100 transition-colors duration-300", {
-                  'text-text-100': location.pathname === route.path
-                })}
+                className={cn(
+                  'text-text-400 text-sm hover:text-text-100 transition-colors duration-300',
+                  {
+                    'text-text-100': location.pathname === route.path,
+                  }
+                )}
               >
                 {route.name}
               </Link>
