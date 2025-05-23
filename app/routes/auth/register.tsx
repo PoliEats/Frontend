@@ -1,52 +1,65 @@
+import axios from 'axios'
+import { useState } from 'react'
+import { Loader } from 'react-feather'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Input from '../../components/Input'
 import '/app/variables.css'
-import 'react-toastify/dist/ReactToastify.css';
-import React, { useState } from 'react'
-import { useForm, type SubmitHandler } from "react-hook-form";
-import Input from "../../components/Input";
-import axios from 'axios';
-import { Loader } from 'react-feather';
-import { ToastContainer, toast } from 'react-toastify';
 
 interface User {
-  name: string;
-  document: string;
-  email: string;
-  password: string;
+  name: string
+  document: string
+  email: string
+  password: string
   confirmPassword: string
 }
 
 function Register() {
-  const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, register, reset, getValues, formState: { errors } } = useForm<User>();
+  const [isLoading, setIsLoading] = useState(false)
+  const {
+    handleSubmit,
+    register,
+    reset,
+    getValues,
+    formState: { errors },
+  } = useForm<User>()
   const enviarDados: SubmitHandler<User> = async (data) => {
-    setIsLoading(true);
-    await axios.post("http://localhost:3000/api/auth/register", data, {
-      withCredentials: true,
-    }).then((response) => {
-      console.log(response.data);
-      toast.success(response.data.message, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        pauseOnHover: true,
-        draggable: false,
+    setIsLoading(true)
+    await axios
+      .post('http://localhost:8000/auth/register', data, {
+        withCredentials: true,
       })
-    }).catch((error) => {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Erro ao cadastrar usuário.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        pauseOnHover: true,
-        draggable: false,
-      });
-    });
+      .then((response) => {
+        console.log(response.data)
+        toast.success(response.data.message, {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: false,
+          pauseOnHover: true,
+          draggable: false,
+        })
+      })
+      .catch((error) => {
+        console.error(error)
+        toast.error(
+          error.response?.data?.message || 'Erro ao cadastrar usuário.',
+          {
+            position: 'top-center',
+            autoClose: 3000,
+            hideProgressBar: false,
+            pauseOnHover: true,
+            draggable: false,
+          }
+        )
+      })
     reset()
-    setIsLoading(false);
+    setIsLoading(false)
   }
 
   return (
-    <main className="w-full overflow-hidden bg-[var(--background)] flex items-center justify-center h-[calc(100vh-4rem)]">{/* remove a altura na navbar da altura total */}
+    <main className="w-full overflow-hidden bg-[var(--background)] flex items-center justify-center h-[calc(100vh-4rem)]">
+      {/* remove a altura na navbar da altura total */}
       <ToastContainer />
       <form onSubmit={handleSubmit(enviarDados)}>
         <h1 className="text-[var(--text)] text-4xl flex items-center justify-center pb-5">
@@ -59,7 +72,7 @@ function Register() {
             type="text"
             id="name"
             register={register}
-            register_options={{ required: "Campo obrigatório" }}
+            register_options={{ required: 'Campo obrigatório' }}
             placeholder="Digite seu nome completo"
             error={errors.name?.message}
           />
@@ -70,10 +83,10 @@ function Register() {
             id="document"
             register={register}
             register_options={{
-              required: "Campo obrigatório",
+              required: 'Campo obrigatório',
               pattern: {
                 value: /^\d{11}$/, //valida 11 digitos
-                message: "CPF inválido, digite 11 números",
+                message: 'CPF inválido, digite 11 números',
               },
             }}
             placeholder="Digite seu CPF"
@@ -86,10 +99,10 @@ function Register() {
             id="email"
             register={register}
             register_options={{
-              required: "Campo obrigatório",
+              required: 'Campo obrigatório',
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                message: "E-mail inválido",
+                message: 'E-mail inválido',
               },
             }}
             placeholder="Digite seu e-mail"
@@ -102,10 +115,10 @@ function Register() {
             id="password"
             register={register}
             register_options={{
-              required: "Campo obrigatório",
+              required: 'Campo obrigatório',
               minLength: {
                 value: 6,
-                message: "A senha deve ter no mínimo 6 caracteres",
+                message: 'A senha deve ter no mínimo 6 caracteres',
               },
             }}
             placeholder="Digite seu senha"
@@ -118,20 +131,20 @@ function Register() {
             id="confirmPassword"
             register={register}
             register_options={{
-              required: "Campo obrigatório",
+              required: 'Campo obrigatório',
               validate: (value) =>
-                value === getValues("password") || "As senhas são diferentes",
+                value === getValues('password') || 'As senhas são diferentes',
             }}
             placeholder="Digite seu senha novamente"
             error={errors.confirmPassword?.message}
           />
 
-          <button type="submit" disabled={isLoading} className="w-full bg-[var(--accent)] text-[#FAFAFA] flex items-center justify-center py-2 px-4 rounded-lg mt-5 hover:bg-[var(--accent-hover)] disabled:bg-[var(--accent)] transition-colors">
-            {isLoading ? (
-              <Loader className='animate-spin' />
-            ) : (
-              "Cadastrar"
-            )}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-[var(--accent)] text-[#FAFAFA] flex items-center justify-center py-2 px-4 rounded-lg mt-5 hover:bg-[var(--accent-hover)] disabled:bg-[var(--accent)] transition-colors"
+          >
+            {isLoading ? <Loader className="animate-spin" /> : 'Cadastrar'}
           </button>
 
           <div>
