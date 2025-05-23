@@ -1,6 +1,5 @@
 import type { RegisterOptions } from 'react-hook-form';
 
-
 function Input({
   label,
   type,
@@ -45,10 +44,7 @@ function Input({
             [&::-webkit-outer-spin-button]:appearance-none
             [appearance:textfield]
         `}
-        
         />
-
-        
 
       {hint && <span className="text-xs text-text-500">{hint}</span>}
       {error && <span className="text-red-500 text-xs">{error}</span>}
