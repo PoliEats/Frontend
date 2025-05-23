@@ -36,16 +36,7 @@ function Register() {
       })
       .catch((error) => {
         console.error(error)
-        toast.error(
-          error.response?.data?.message || 'Erro ao cadastrar usuário.',
-          {
-            position: 'top-center',
-            autoClose: 3000,
-            hideProgressBar: false,
-            pauseOnHover: true,
-            draggable: false,
-          }
-        )
+        toast.error(error.response?.data?.message || 'Erro ao cadastrar usuário.')
       })
     reset()
     setIsLoading(false)
