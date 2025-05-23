@@ -7,7 +7,8 @@ import {
   type ColumnFiltersState,
   type PaginationState,
 } from '@tanstack/react-table'
-import { useState, type ReactNode } from 'react'
+import axios from 'axios'
+import { useEffect, useState, type ReactNode } from 'react'
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,6 +16,7 @@ import {
   ChevronsRight,
 } from 'react-feather'
 import { useForm, type RegisterOptions } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { Modal, ModalContent } from '~/components/Modal'
 import Skeleton from '~/components/Skeleton'
 import { defaultMenuColumns } from '~/functions/tables.tsx'
@@ -86,6 +88,7 @@ function Input({
 
 function Menu() {
   const [isAddingItem, setIsAddingItem] = useState(false)
+  const [isLoadingData, setIsLoadingData] = useState(true)
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 16,
@@ -96,16 +99,7 @@ function Menu() {
       value: '',
     },
   ])
-  const [data, setData] = useState<TProduct[]>([
-    {
-      id: '1',
-      name: 'Pizza de Calabresa',
-      description: 'Pizza de calabresa com cebola e azeitona',
-      price: 29.9,
-      type: 'pizza',
-      isAvailable: true,
-    },
-  ])
+  const [data, setData] = useState<TProduct[]>([])
 
   const {
     register,
@@ -113,12 +107,22 @@ function Menu() {
     formState: { errors },
   } = useForm<TProduct>()
 
-  const onSubmit = (data: TProduct) => {
-    data.isAvailable = true
+  const onSubmit = async (data: TProduct) => {
+    data.available = true
+    
+    // TODO: Add API call to add item to database using Axios
+    await axios.post("http://localhost:8000/product", data, {
+      withCredentials: true,
+    }).then((res) => {
+      data.id = res.data.data.id
+      toast.success('Item adicionado com sucesso!');
+    }).catch((err) => {
+      console.error(err)
+      toast.error('Erro ao adicionar item');
+    });
+
     setData((prev) => [...prev, data])
     setIsAddingItem(false)
-
-    // TODO: Add API call to add item to database using Axios
   }
 
   const table = useReactTable({
@@ -135,6 +139,25 @@ function Menu() {
       columnFilters: columnFilters,
     },
   })
+
+  async function fetchData() {
+    setIsLoadingData(true)
+    await axios.get('http://localhost:8000/products', {
+      withCredentials: true,
+    })
+      .then((res) => {
+        setData(res.data.data)
+      })
+      .catch((err) => {
+        console.error(err)
+      }).finally(() => {
+        setIsLoadingData(false)
+      })
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <div className="flex flex-col items-start justify-center h-full gap-y-4 py-4">
@@ -192,7 +215,7 @@ function Menu() {
             <div className="w-full h-fit flex items-center justify-end gap-x-2">
               <button
                 type="submit"
-                className="px-4 py-2 bg-primary-500 rounded-sm text-sm cursor-pointer hover:bg-primary-400 transition-colors duration-300"
+                className="px-4 py-2 bg-primary-500 rounded-sm text-sm text-text-50 cursor-pointer hover:bg-primary-400 transition-colors duration-300"
                 onClick={() => {
                   setIsAddingItem(false)
                 }}
@@ -200,7 +223,7 @@ function Menu() {
                 Adicionar
               </button>
               <button
-                className="px-4 py-2 bg-background-800 rounded-sm text-sm cursor-pointer hover:bg-background-700 transition-colors duration-300"
+                className="px-4 py-2 bg-background-800 rounded-sm text-sm text-text-50 cursor-pointer hover:bg-background-700 transition-colors duration-300"
                 onClick={() => {
                   setIsAddingItem(false)
                 }}
@@ -214,7 +237,7 @@ function Menu() {
       <div className="flex justify-between w-full">
         <h1 className="text-3xl font-bold text-text-100">Cardápio</h1>
         <button
-          className="px-4 py-2 bg-primary-500 rounded-sm text-sm cursor-pointer hover:bg-primary-400 transition-colors duration-300"
+          className="px-4 py-2 bg-primary-500 rounded-sm text-sm text-text-50 cursor-pointer hover:bg-primary-400 transition-colors duration-300"
           onClick={() => {
             setIsAddingItem(true)
           }}
@@ -234,7 +257,7 @@ function Menu() {
         />
       </div>
       <Skeleton
-        isLoading={false}
+        isLoading={isLoadingData}
         className="w-full h-full bg-background-950 rounded-sm p-4 overflow-auto"
       >
         <table className="table-auto w-3xl md:w-full h-min overflow-x-auto">

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { Modal, ModalContent } from '~/components/Modal'
 import { socket } from '~/functions/functions'
 import type { Order } from '~/functions/interfaces'
@@ -11,6 +12,7 @@ function KitchenScreen() {
   const [confirmingPayment, setConfirmingPayment] = useState<boolean>(false)
   const [pendingOrders, setPendingOrders] = useState<Order[]>([])
   const [completedOrders, setCompletedOrders] = useState<Order[]>([])
+  const [paymentMethod, setPaymentMethod] = useState<string>('')
 
   function handleNewOrder(data: string) {
     let order: Order = JSON.parse(data).newOrder
@@ -31,7 +33,7 @@ function KitchenScreen() {
     })
   }
 
-  function setOrderPaid(order: Order) {
+  async function setOrderPaid(order: Order) {
     setCompletedOrders((prev) => {
       if (prev) {
         return prev.filter((o) => o.id !== order.id)
@@ -42,10 +44,31 @@ function KitchenScreen() {
 
     //TODO: Send order to backend to mark as paid
 
+    await axios
+      .patch(`http://localhost:8000/orders/${order.id}`, {
+        status: 'completed',
+        paymentMethod: paymentMethod,
+      })
+      .then((res) => {
+        const order = res.data.data
+        setCompletedOrders((prev) => {
+          if (prev) {
+            return [order, ...prev]
+          } else {
+            return [order]
+          }
+        })
+        toast.success('Pedido marcado como pago!');
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('Erro ao marcar pedido como pago');
+      })
+
     setConfirmingPayment(false)
   }
 
-  function setOrderReady(order: Order) {
+  async function setOrderReady(order: Order) {
     setPendingOrders((prev) => {
       if (prev) {
         return prev.filter((o) => o.id !== order.id)
@@ -62,6 +85,25 @@ function KitchenScreen() {
     })
 
     //TODO: Send order to backend to mark as ready
+    await axios
+      .patch(`http://localhost:8000/orders/${order.id}`, {
+        status: 'completed',
+      })
+      .then((res) => {
+        const order = res.data.data
+        setCompletedOrders((prev) => {
+          if (prev) {
+            return [order, ...prev]
+          } else {
+            return [order]
+          }
+        })
+        toast.success('Pedido marcado como pronto!');
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('Erro ao marcar pedido como pronto');
+      })
 
     setConfirmingReady(false)
   }
@@ -142,6 +184,10 @@ function KitchenScreen() {
             <select
               id="payment_method"
               className="bg-background-800 text-text-100 w-full h-10 rounded-lg px-4"
+              onChange={(e) => {
+                setPaymentMethod(e.target.value)
+              }}
+              value={paymentMethod}
             >
               <option value="cash">Dinheiro</option>
               <option value="card">Cartão</option>

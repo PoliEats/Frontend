@@ -64,7 +64,7 @@ function ModalContent({
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       className={cn(
-        'bg-background-950 w-md h-1/2 rounded-lg flex flex-col px-4 pb-4',
+        'bg-background-900 w-md h-1/2 rounded-lg flex flex-col px-4 pb-4',
         className
       )}
     >

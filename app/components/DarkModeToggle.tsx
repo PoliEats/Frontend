@@ -21,12 +21,12 @@ function DarkModeToggle() {
       {isDarkMode ? (
         <Moon
           size={24}
-          className="hidden md:block cursor-pointer hover:text-[#1F8B96] transition-colors duration-300"
+          className="hidden md:block cursor-pointer hover:text-accent-500 transition-colors duration-300"
         />
       ) : (
         <Sun
           size={24}
-          className="hidden md:block cursor-pointer hover:text-[#1F8B96] transition-colors duration-300"
+          className="hidden md:block cursor-pointer hover:text-accent-500 transition-colors duration-300"
         />
       )}
     </button>
