@@ -33,7 +33,7 @@ export const defaultMenuColumns = [
       </div>
     ),
   }),
-  menuColumnHelper.accessor('isAvailable', {
+  menuColumnHelper.accessor('available', {
     header: 'Disponível',
     cell: (info) => (
       <div className="bg-text-50 text-background-950 w-fit px-4 text-xs py-1 rounded-sm">

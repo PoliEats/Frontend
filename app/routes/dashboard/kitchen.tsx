@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { AnimatePresence, motion } from 'framer-motion'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Modal, ModalContent } from '~/components/Modal'
@@ -45,20 +46,13 @@ function KitchenScreen() {
     //TODO: Send order to backend to mark as paid
 
     await axios
-      .patch(`http://localhost:8000/orders/${order.id}`, {
-        status: 'completed',
+      .patch(`http://localhost:8000/order/${order.id}`, {
+        status: 'paid',
         paymentMethod: paymentMethod,
       })
       .then((res) => {
-        const order = res.data.data
-        setCompletedOrders((prev) => {
-          if (prev) {
-            return [order, ...prev]
-          } else {
-            return [order]
-          }
-        })
         toast.success('Pedido marcado como pago!');
+        setCompletedOrders((prev) => prev.filter((o) => o.id !== order.id))
       })
       .catch((err) => {
         console.log(err)
@@ -86,18 +80,10 @@ function KitchenScreen() {
 
     //TODO: Send order to backend to mark as ready
     await axios
-      .patch(`http://localhost:8000/orders/${order.id}`, {
+      .patch(`http://localhost:8000/order/${order.id}`, {
         status: 'completed',
       })
       .then((res) => {
-        const order = res.data.data
-        setCompletedOrders((prev) => {
-          if (prev) {
-            return [order, ...prev]
-          } else {
-            return [order]
-          }
-        })
         toast.success('Pedido marcado como pronto!');
       })
       .catch((err) => {
@@ -124,7 +110,11 @@ function KitchenScreen() {
           (order: Order) => order.status === 'pending'
         )
         const completedOrders = orders.filter(
-          (order: Order) => order.status === 'completed'
+          (order: Order) => {
+            if (order.status === 'completed', order.status === 'paid') {
+              return order
+            }
+          }
         )
         setPendingOrders(pendingOrders)
         setCompletedOrders(completedOrders)
@@ -222,7 +212,7 @@ function KitchenScreen() {
         <div className="h-fit min-h-82 w-full overflow-x-auto gap-x-4 flex flex-row py-4 px-2">
           <AnimatePresence>
             {pendingOrders.length > 0 ? (
-              pendingOrders.map((order) => (
+              pendingOrders.sort((a,b) => moment(b.createdAt).diff(a.createdAt)).map((order) => (
                 <motion.div
                   key={order.id}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -293,7 +283,7 @@ function KitchenScreen() {
         <div className="h-fit min-h-82 w-full overflow-x-auto gap-x-4 flex flex-row py-4 px-2">
           <AnimatePresence>
             {completedOrders.length > 0 ? (
-              completedOrders.map((order) => (
+              completedOrders.sort((a, b) => moment(b.createdAt).diff(a.createdAt)).map((order) => (
                 <motion.div
                   key={order.id}
                   initial={{ opacity: 0, scale: 0.8 }}

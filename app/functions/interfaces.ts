@@ -28,7 +28,7 @@ export interface OrderItem {
 export interface Order {
   id: number
   name: string
-  status: 'pending' | 'canceled' | 'completed'
+  status: 'pending' | 'canceled' | 'completed' | 'paid'
   total: number
   items: OrderItem[]
   createdAt: string

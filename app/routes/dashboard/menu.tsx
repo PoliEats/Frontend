@@ -78,7 +78,7 @@ function Input({
         placeholder={placeholder}
         onChange={onChange}
         {...register(id, { ...register_options })}
-        className="p-2 bg-background-900 h-10 min-w-72 text-sm text-text-50 rounded-sm outline-none focus:ring-2 transition-all duration-200 ring-accent-500"
+        className="p-2 bg-background-950 h-10 min-w-72 text-sm text-text-50 rounded-sm outline-none focus:ring-2 transition-all duration-200 ring-accent-500"
       />
       {hint && <span className="text-xs text-text-500">{hint}</span>}
       {error && <span className="text-red-500 text-xs">{error}</span>}
