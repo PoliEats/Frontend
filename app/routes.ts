@@ -7,6 +7,7 @@ import {
 
 export default [
   route('chat', 'routes/chat.tsx'),
+  route('privacy-policy', 'routes/privacy_policy.tsx'),
   index('routes/home.tsx'),
 
   layout('routes/auth/_layout.tsx', [
