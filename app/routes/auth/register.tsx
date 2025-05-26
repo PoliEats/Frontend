@@ -2,10 +2,10 @@ import axios from 'axios'
 import { useState } from 'react'
 import { Loader } from 'react-feather'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Input from '../../components/Input'
-import '/app/variables.css'
 
 interface User {
   name: string
@@ -16,6 +16,7 @@ interface User {
 }
 
 function Register() {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)
   const {
     handleSubmit,
@@ -33,6 +34,9 @@ function Register() {
       .then((response) => {
         console.log(response.data)
         toast.success(response.data.message)
+        setTimeout(() => {
+          navigate('/chat')
+        }, 1000)
       })
       .catch((error) => {
         console.error(error)
@@ -43,15 +47,15 @@ function Register() {
   }
 
   return (
-    <main className="w-full overflow-hidden bg-[var(--background)] flex items-center justify-center h-[calc(100vh-4rem)]">
+    <main className="w-full overflow-hidden bg-background-950 flex items-center justify-center h-full">
       {/* remove a altura na navbar da altura total */}
       <ToastContainer />
       <form onSubmit={handleSubmit(enviarDados)}>
-        <h1 className="text-[var(--text)] text-4xl flex items-center justify-center pb-5">
+        <h1 className="text-text-50 text-3xl font-bold flex items-center justify-center pb-5">
           Cadastre-se
         </h1>
 
-        <div className="max-w-sm min-w-[350px] text-[var(--text)] ">
+        <div className="max-w-sm min-w-[350px] text-text-50 flex flex-col gap-y-4">
           <Input
             label="Nome:"
             type="text"
@@ -127,29 +131,26 @@ function Register() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[var(--accent)] text-[#FAFAFA] flex items-center justify-center py-2 px-4 rounded-lg mt-5 hover:bg-[var(--accent-hover)] disabled:bg-[var(--accent)] transition-colors"
+            className="w-full bg-accent-600 text-[#FAFAFA] flex items-center justify-center py-2 px-4 rounded-lg mt-5 hover:bg-accent-500 disabled:bg-accent-600 transition-colors"
           >
             {isLoading ? <Loader className="animate-spin" /> : 'Cadastrar'}
           </button>
 
-          <div>
-            <p className="text-[var(--text-muted)] text-base flex items-center justify-center pt-3">
-              Já tem uma conta?&nbsp;
-              <a
-                href="/login"
-                className="text-[var(--accent-hover)] hover:underline"
-              >
-                Faça login
-              </a>
-            </p>
-            <p className="text-[var(--text-muted)] text-xs flex items-center justify-center">
+          <div className='flex flex-col items-center gap-y-2 pt-4'>
+            <p className="text-text-400 text-xs flex items-center justify-center">
               Ao fazer login você concorda com a nossa&nbsp;
-              <a
-                href="/path/to/document.pdf"
-                className="text-[var(--accent-hover)] hover:underline"
-              >
+              <Link
+                to={'/privacy-policy'}
+                className="text-accent-500 hover:underline"
+                >
                 Política de Privacidade
-              </a>
+                </Link>
+            </p>
+            <p className="text-text-400 text-sm flex items-center justify-center">
+              Já tem uma conta?&nbsp;
+              <Link to={'/auth/login'} className="text-accent-500 hover:underline">
+                Faça login
+              </Link>
             </p>
           </div>
         </div>

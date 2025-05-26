@@ -1,8 +1,8 @@
-import { LogOut } from 'react-feather'
 import { Link, useLocation } from 'react-router'
 import { cn } from '~/functions/functions'
 import type { Route } from '~/functions/interfaces'
 import DarkModeToggle from './DarkModeToggle'
+import LogoutButton from './LogoutButton'
 
 function Navbar() {
   const location = useLocation()
@@ -46,14 +46,7 @@ function Navbar() {
       </div>
       <div className="flex items-center gap-x-6">
         <DarkModeToggle />
-        <LogOut
-          className="text-text-200 hover:text-text-100 transition-colors duration-300 cursor-pointer"
-          size={24}
-          onClick={() => {
-            localStorage.removeItem('token')
-            window.location.href = '/'
-          }}
-        />
+        <LogoutButton />
       </div>
     </nav>
   )

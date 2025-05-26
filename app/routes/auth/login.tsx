@@ -1,105 +1,117 @@
 import axios from 'axios'
+import { useState } from 'react'
+import { Loader } from 'react-feather'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
+import Input from '~/components/Input'
 
-type Inputs = {
+type User = {
   email: string
   password: string
   rememberMe: boolean
 }
 
 function Login() {
-    const {
-    register,
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+  const {
     handleSubmit,
+    register,
+    reset,
+    getValues,
     formState: { errors },
-  } = useForm<Inputs>()
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await axios.post('http://localhost:8000/auth/login', data, {
-      withCredentials: true,
-    }).then((response) => {
-      console.log(response.data)
-    }).catch((error) => {
-      console.error('Error during login:', error)
-    });
+  } = useForm<User>()
+  const enviarDados: SubmitHandler<User> = async (data) => {
+    setIsLoading(true)
+    await axios
+      .post('http://localhost:8000/auth/login', data, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data)
+        toast.success(response.data.message)
+        setTimeout(() => {
+          navigate('/chat')
+        }, 1000)
+      })
+      .catch((error) => {
+        console.error(error)
+        toast.error(error.response?.data?.message || 'Erro ao cadastrar usuário.')
+      })
+    reset()
+    setIsLoading(false)
   }
 
   return (
-    <div className="w-full h-screen bg-[#0F0F0F] flex">
-      <div className="w-full max-w-sm min-w-[350px] p-6 m-auto">
-        <h1 className="text-[#FAFAFA] font-extrabold text-center pb-3 text-2xl">
-          Login
+    <main className="w-full overflow-hidden bg-background-950 flex items-center justify-center h-full">
+      {/* remove a altura na navbar da altura total */}
+      <form onSubmit={handleSubmit(enviarDados)}>
+        <h1 className="text-text-50 text-3xl font-bold flex items-center justify-center pb-5">
+          Entrar
         </h1>
-        <p className="text-[#FAFAFA] text-center pb-6">
-          Faça login para realizar o seu pedido!
-        </p>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm pl-1 text-[#FAFAFA]">
-              Email:
-            </label>
-            <input
-              type="email"
-              {...register('email', { required: true })}
-              className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#1EB4C3] hover:border-[#1EB4C3]"
-              placeholder="Insira o seu email"
-              required
-            />
-          </div>
+        <div className="max-w-sm min-w-[350px] text-text-50 flex flex-col gap-y-4">
+          <Input
+            label="E-mail:"
+            type="email"
+            id="email"
+            register={register}
+            register_options={{
+              required: 'Campo obrigatório',
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                message: 'E-mail inválido',
+              },
+            }}
+            placeholder="Digite seu e-mail"
+            error={errors.email?.message}
+          />
 
-          <div className="mb-4">
-            <label className="block mb-2 text-sm pl-1 text-[#FAFAFA]">
-              Senha:
-            </label>
-            <input
-              type="password"
-              {...register('password', { required: true })}
-              className="w-full bg-[#1F1F1F] placeholder:text-[#8D8D8D] text-[#FAFAFA] text-sm border border-transparent rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-[#1EB4C3] hover:border-[#1EB4C3]"
-              placeholder="Insira sua senha"
-              required
-            />
-          </div>
-
-          <div className="flex items-center mb-6">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              {...register('rememberMe')}
-              className="mr-2"
-            />
-            <label htmlFor="rememberMe" className="text-sm text-[#FAFAFA]">
-              Lembre-se de mim
-            </label>
-          </div>
+          <Input
+            label="Senha:"
+            type="password"
+            id="password"
+            register={register}
+            register_options={{
+              required: 'Campo obrigatório',
+              minLength: {
+                value: 6,
+                message: 'A senha deve ter no mínimo 6 caracteres',
+              },
+            }}
+            placeholder="Digite seu senha"
+            error={errors.password?.message}
+          />
 
           <button
             type="submit"
-            className="w-full bg-[#1EB4C3] text-[#FAFAFA] py-2 rounded-md hover:bg-[#1eb5c3d6] transition duration-300 cursor-pointer"
+            disabled={isLoading}
+            className="w-full bg-accent-600 text-[#FAFAFA] flex items-center justify-center py-2 px-4 rounded-lg mt-5 hover:bg-accent-500 disabled:bg-accent-600 transition-colors"
           >
-            Entrar
+            {isLoading ? <Loader className="animate-spin" /> : 'Fazer login'}
           </button>
-        </form>
 
-        <div className="mt-5 text-center text-sm text-[#8D8D8D]">
-          <p className="mb-2">
-            Ainda não tem uma conta?{' '}
-            <Link to="/register" className="text-[#FAFAFA] underline">
-              Cadastre-se
-            </Link>
-          </p>
-
-          <p>
-            Ao fazer login você concorda com a nossa{' '}
-            <Link to="/privacy" className="text-[#8D8D8D] underline">
-              Política de Privacidade
-            </Link>
-          </p>
+          <div className='flex flex-col items-center gap-y-2 pt-4'>
+            <p className="text-text-400 text-xs flex items-center justify-center">
+              Ao fazer login você concorda com a nossa&nbsp;
+              <Link
+                to={'/privacy-policy'}
+                className="text-accent-500 hover:underline"
+                >
+                Política de Privacidade
+                </Link>
+            </p>
+            <p className="text-text-400 text-sm flex items-center justify-center">
+              Já tem uma conta?&nbsp;
+              <Link to={'/auth/login'} className="text-accent-500 hover:underline">
+                Faça login
+              </Link>
+            </p>
+          </div>
         </div>
-      </div>
-    </div>
-  )
+      </form>
+    </main>  )
 }
 
 export default Login

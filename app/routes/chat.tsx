@@ -7,6 +7,7 @@ import { ChatBubble, ChatBubbleOptions } from '~/components/ChatBubble'
 import DarkModeToggle from '~/components/DarkModeToggle'
 import { Drawer, DrawerContent, DrawerTopbar } from '~/components/Drawer'
 import FilterOption from '~/components/FilterOption'
+import LogoutButton from '~/components/LogoutButton'
 import MenuItem from '~/components/MenuItem'
 import { Modal, ModalContent } from '~/components/Modal'
 import QuickMessage from '~/components/QuickMessage'
@@ -100,7 +101,9 @@ function DrawerMenu() {
   }, [nameFilter, categoryFilter])
 
   async function fetchData() {
-    await axios.get('http://localhost:8000/products').then((res) => {
+    await axios.get('http://localhost:8000/products', {
+      withCredentials: true
+    }).then((res) => {
       const data = res.data.data
       setDisplayedItems(data.map((item: any) => ({
         ...item,
@@ -313,14 +316,25 @@ function Chat() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (socket.connected == false) {
+    try {
+      socket.connect()
+
+      setTimeout(() => {
+        if (!socket.connected) {
+          console.error('Socket connection failed')
+          navigate('/auth/login')
+        }
+      }, 2000)
+    } catch (error) {
+      console.error('Error connecting to socket:', error)
       navigate('/auth/login')
-      return
     }
 
     socket.on('message', newMessageHandler)
     return () => {
       socket.off('message', newMessageHandler)
+
+      socket.disconnect()
     }
   }, [])
 
@@ -423,6 +437,7 @@ function Chat() {
               <Book size={24} />
             </button>
             <DarkModeToggle />
+            <LogoutButton />
           </div>
         </div>
         <div className="w-full h-full flex flex-col justify-between p-2 md:p-4 gap-y-4 py-4">

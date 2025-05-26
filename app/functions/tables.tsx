@@ -62,7 +62,9 @@ export const defaultMenuColumns = [
 
       async function deleteProduct() {
         const productId = info.row.original.id
-        await axios.delete(`http://localhost:8000/product/${productId}`).then((res) => {
+        await axios.delete(`http://localhost:8000/product/${productId}`, {
+          withCredentials: true,
+        }).then((res) => {
           if (res.status === 200) {
             toast.success('Produto excluído com sucesso!')
             setIsDeleting(false)

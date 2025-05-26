@@ -104,7 +104,9 @@ function KitchenScreen() {
     socket.on('new_order', (data) => handleNewOrder(data))
 
     async function fetchOrders() {
-      await axios.get('http://localhost:8000/orders').then((res) => {
+      await axios.get('http://localhost:8000/orders', {
+        withCredentials: true,
+      }).then((res) => {
         const orders = res.data.data
         const pendingOrders = orders.filter(
           (order: Order) => order.status === 'pending'
