@@ -1,49 +1,135 @@
+import axios from 'axios'
+import { useState } from 'react'
+import { Loader } from 'react-feather'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Input from '../../components/Input'
+import '/app/variables.css'
+
+interface User {
+  name: string
+  document: string
+  email: string
+  password: string
+  confirmPassword: string
+}
 
 function Register() {
+  const [isLoading, setIsLoading] = useState(false)
+  const {
+    handleSubmit,
+    register,
+    reset,
+    getValues,
+    formState: { errors },
+  } = useForm<User>()
+  const enviarDados: SubmitHandler<User> = async (data) => {
+    setIsLoading(true)
+    await axios
+      .post('http://localhost:8000/auth/register', data, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data)
+        toast.success(response.data.message)
+      })
+      .catch((error) => {
+        console.error(error)
+        toast.error(error.response?.data?.message || 'Erro ao cadastrar usuário.')
+      })
+    reset()
+    setIsLoading(false)
+  }
+
   return (
-    <div className="w-full overflow-hidden bg-[var(--background)] flex items-center justify-center h-[calc(100vh-4rem)]">
-      {' '}
+    <main className="w-full overflow-hidden bg-[var(--background)] flex items-center justify-center h-[calc(100vh-4rem)]">
       {/* remove a altura na navbar da altura total */}
-      <div>
-        <p className="text-[var(--text)] text-4xl flex items-center justify-center pb-5">
+      <ToastContainer />
+      <form onSubmit={handleSubmit(enviarDados)}>
+        <h1 className="text-[var(--text)] text-4xl flex items-center justify-center pb-5">
           Cadastre-se
-        </p>
+        </h1>
 
         <div className="max-w-sm min-w-[350px] text-[var(--text)] ">
-          <label className="block mb-1 text-sm pl-1">Nome:</label>
-          <input
-            className="w-full bg-[var(--foreground)]  placeholder:text-[var(--text-muted)] text-sm border border-transparent rounded-md px-3 py-2  focus:outline-none focus:border-[var(--accent)] hover:border-[var(--accent)] transition-colors"
-            placeholder="Insira seu nome completo"
+          <Input
+            label="Nome:"
+            type="text"
+            id="name"
+            register={register}
+            register_options={{ required: 'Campo obrigatório' }}
+            placeholder="Digite seu nome completo"
+            error={errors.name?.message}
           />
 
-          <label className="block mb-1 pt-4 text-sm pl-1">CPF:</label>
-          <input
-            className="w-full bg-[var(--foreground)]  placeholder:text-[var(--text-muted)] text-sm border border-transparent rounded-md px-3 py-2 focus:outline-none focus:border-[var(--accent)] hover:border-[var(--accent)] transition-colors"
-            placeholder="000.000.000-00"
+          <Input
+            label="CPF:"
+            type="number"
+            id="document"
+            register={register}
+            register_options={{
+              required: 'Campo obrigatório',
+              pattern: {
+                value: /^\d{11}$/, //valida 11 digitos
+                message: 'CPF inválido, digite 11 números',
+              },
+            }}
+            placeholder="Digite seu CPF"
+            error={errors.document?.message}
           />
 
-          <label className="block mb-1 pt-4 text-sm pl-1 ">E-mail:</label>
-          <input
-            className="w-full bg-[var(--foreground)]  placeholder:text-[var(--text-muted)] text-sm border border-transparent rounded-md px-3 py-2 focus:outline-none focus:border-[var(--accent)] hover:border-[var(--accent)] transition-colors"
-            placeholder="Insira seu e-mail"
+          <Input
+            label="E-mail:"
+            type="email"
+            id="email"
+            register={register}
+            register_options={{
+              required: 'Campo obrigatório',
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                message: 'E-mail inválido',
+              },
+            }}
+            placeholder="Digite seu e-mail"
+            error={errors.email?.message}
           />
 
-          <label className="block mb-1 pt-4 text-sm pl-1">Senha:</label>
-          <input
-            className="w-full bg-[var(--foreground)]  placeholder:text-[var(--text-muted)] text-sm border border-transparent rounded-md px-3 py-2 focus:outline-none focus:border-[var(--accent)] hover:border-[var(--accent)] transition-colors"
-            placeholder="Insira sua senha"
+          <Input
+            label="Senha:"
+            type="password"
+            id="password"
+            register={register}
+            register_options={{
+              required: 'Campo obrigatório',
+              minLength: {
+                value: 6,
+                message: 'A senha deve ter no mínimo 6 caracteres',
+              },
+            }}
+            placeholder="Digite seu senha"
+            error={errors.password?.message}
           />
 
-          <label className="block mb-1 pt-4 text-sm pl-1">
-            Confirme sua senha:
-          </label>
-          <input
-            className="w-full bg-[var(--foreground)]  placeholder:text-[var(--text-muted)] text-sm border border-transparent rounded-md px-3 py-2 focus:outline-none focus:border-[var(--accent)] hover:border-[var(--accent)] transition-colors"
-            placeholder="Insira sua senha novamente"
+          <Input
+            label="Confirme sua senha:"
+            type="password"
+            id="confirmPassword"
+            register={register}
+            register_options={{
+              required: 'Campo obrigatório',
+              validate: (value) =>
+                value === getValues('password') || 'As senhas são diferentes',
+            }}
+            placeholder="Digite seu senha novamente"
+            error={errors.confirmPassword?.message}
           />
 
-          <button className="w-full bg-[var(--accent)] text-[#FAFAFA] flex items-center justify-center py-2 px-4 rounded-lg mt-5 hover:bg-[var(--accent-hover)] transition-colors">
-            Entrar
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-[var(--accent)] text-[#FAFAFA] flex items-center justify-center py-2 px-4 rounded-lg mt-5 hover:bg-[var(--accent-hover)] disabled:bg-[var(--accent)] transition-colors"
+          >
+            {isLoading ? <Loader className="animate-spin" /> : 'Cadastrar'}
           </button>
 
           <div>
@@ -67,8 +153,8 @@ function Register() {
             </p>
           </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </main>
   )
 }
 export default Register
