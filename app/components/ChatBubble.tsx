@@ -138,7 +138,7 @@ function ChatBubbleOptions({ options }: ChatBubbleOptions) {
       {options?.map((option: Option, index: number) => (
         <button
           key={index}
-          className="text-[#6dc0c9] text-sm bg-background-800/20 rounded-sm text-center px-4 py-2 hover:text-[#1F8B96] transition-all duration-300 cursor-pointer"
+          className="text-[#6dc0c9] text-sm bg-background-800/20 rounded-sm text-center px-4 py-2 hover:text-accent-500 transition-all duration-300 cursor-pointer"
           onClick={() => {
             option.onClick()
           }}
@@ -151,3 +151,4 @@ function ChatBubbleOptions({ options }: ChatBubbleOptions) {
 }
 
 export { ChatBubble, ChatBubbleOptions }
+

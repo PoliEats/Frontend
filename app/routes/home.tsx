@@ -1,64 +1,69 @@
-import React from 'react'
-import celular from '../assets/celular.png'
-import app from '../assets/app.png'
-import Poliedro from '../assets/Poliedro.png'
-import PoliEats from '../assets/PoliEats.png'
-import IMT from '../assets/IMT.png'
 import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa'
+import { Link } from 'react-router'
+import DarkModeToggle from '~/components/DarkModeToggle'
 
 function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0F0F0F] text-white">
-      <div className="flex flex-col gap-24 px-6 lg:px-20 font-lato mt-12 bg-[#0F0F0F]">
+    <div className='bg-background-950'>
+      <div className="min-h-screen bg-background-950 text-white max-w-7xl mx-auto">
+      <div className="w-full h-16 bg-background-950 z-20 flex items-center justify-between">
+        <div className="pl-2 pt-2 flex items-center justify-between w-full bg-background-950">
+          <img src="/logo.svg " className="w-14 h-14" />
+          <DarkModeToggle />
+        </div>
+      </div>
+      <div className="flex flex-col gap-24 px-6 lg:px-20 font-lato pt-32 bg-background-950">
         {/* primeiro bloco: título e imagem */}
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="space-y-6 max-w-lg w-full lg:w-1/2">
             <h1 className="text-[36px] lg:text-[50px] leading-tight">
               <b>PoliEats</b> – Peça, Consulte e Descubra com um Toque!
             </h1>
-            <button className="hidden lg:inline-block cursor-pointer px-8 py-4 bg-[#1EB4C3] hover:bg-[#17a0ad] rounded-lg text-lg font-semibold transition transform hover:scale-105 duration-300">
+            <Link to="/chat" className="hidden lg:inline-block cursor-pointer px-8 py-4 bg-[#1EB4C3] hover:bg-[#17a0ad] rounded-lg text-lg font-semibold transition transform hover:scale-105 duration-300">
               Faça seu pedido!
-            </button>
+            </Link>
           </div>
           <div className="w-full lg:w-1/2 mt-8 lg:mt-0 relative flex justify-center items-center">
             <div
-              className="absolute w-[700px] h-[700px] rounded-full z-0 filter blur-2xl lg:block hidden"
+              className="absolute w-[500px] h-[500px] rounded-full z-10 filter blur-2xl lg:block hidden"
               style={{
                 background:
                   'radial-gradient(circle at center, #269DA9 0%, #0F0F0F 100%)',
+                opacity: 0.2,
               }}
             ></div>
             <img
-              src={celular}
+              src="/assets/celular.png"
               alt="Ilustração do aplicativo"
-              className="w-[550px] h-auto relative z-10 transition-transform duration-300 transform hover:-translate-y-2"
+              className="w-[350px] h-auto relative z-10 transition-transform duration-300 transform hover:-translate-y-2"
             />
           </div>
         </div>
 
         <div className="w-full lg:hidden flex justify-start pl-6 mt-8">
-          <button className="cursor-pointer px-8 py-4 bg-[#1EB4C3] hover:bg-[#17a0ad] rounded-lg text-lg font-semibold transition transform hover:scale-105 duration-300">
+          <button className="cursor-pointer px-8 py-4 bg-[#1EB4C3] hover:bg-[#17a0ad] rounded-lg text-lg font-semibold transition transform hover:scale-105 duration-300 z-10">
             Faça seu pedido!
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-between">
+        <div className="flex flex-col lg:flex-row items-center justify-between w-full">
           <div className="w-full lg:w-1/2 mt-8 lg:mt-4 relative flex justify-center items-center">
             <div
-              className="absolute w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[700px] lg:h-[700px] filter blur-2xl block rounded-full"
+              className="absolute w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[500px] lg:h-[500px] filter blur-2xl block rounded-full"
               style={{
                 background:
                   'radial-gradient(circle at center, #269DA9 0%, #0F0F0F 100%)',
+                opacity: 0.2,
               }}
             ></div>
             <img
-              src={app}
+              src="/assets/app.png"
               alt="Aplicativo mostrando restaurantes"
-              className="w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[300px] h-auto relative z-10 transition-transform duration-300 transform hover:-translate-y-2"
+              className="w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[200px] h-auto relative z-10 transition-transform duration-300 transform hover:-translate-y-2"
             />
           </div>
 
-          <div className="space-y-6 max-w-lg w-full lg:w-1/2 mt-16 lg:mt-4 text-center lg:text-left 2xl:transform 2xl:translate-x-[-30%]">
+          <div className="w-fit max-w-md">
             <h1 className="text-[28px] lg:text-[34px] leading-tight">
               Quer evitar filas e pedir seu prato favorito em segundos? Converse
               com o <b>PoliEats!</b>
@@ -111,17 +116,17 @@ function LandingPage() {
         </h1>
         <div className="flex flex-col items-center justify-center gap-8 md:flex-row md:justify-center md:gap-32">
           <img
-            src={Poliedro}
+            src="/assets/Poliedro.png"
             alt="Parceiro 1"
             className="w-60 h-60 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2"
           />
           <img
-            src={PoliEats}
+            src="/assets/PoliEats.png"
             alt="Parceiro 3"
             className="w-48 h-48 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2"
           />
           <img
-            src={IMT}
+            src="/assets/IMT.png"
             alt="Parceiro 2"
             className="w-48 h-48 object-contain mx-16 transition-transform duration-300 transform hover:-translate-y-2"
           />
@@ -187,6 +192,7 @@ function LandingPage() {
           © 2025 PoliEats – Todos os direitos reservados.
         </div>
       </div>
+    </div>
     </div>
   )
 }

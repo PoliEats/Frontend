@@ -1,6 +1,8 @@
+import axios from 'axios'
 import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Book, Menu, Send, X } from 'react-feather'
+import { useNavigate } from 'react-router'
 import { ChatBubble, ChatBubbleOptions } from '~/components/ChatBubble'
 import DarkModeToggle from '~/components/DarkModeToggle'
 import { Drawer, DrawerContent, DrawerTopbar } from '~/components/Drawer'
@@ -8,6 +10,7 @@ import FilterOption from '~/components/FilterOption'
 import MenuItem from '~/components/MenuItem'
 import { Modal, ModalContent } from '~/components/Modal'
 import QuickMessage from '~/components/QuickMessage'
+import Skeleton from '~/components/Skeleton'
 import { socket } from '~/functions/functions'
 import type { Message, Order, TQuickMessage } from '~/functions/interfaces'
 
@@ -48,6 +51,7 @@ function DrawerMenu() {
   ]
 
   const [nameFilter, setNameFilter] = useState('')
+  const [isLoadingData, setIsLoadingData] = useState(true)
   const [categoryFilter, setCategoryFilter] = useState<string[]>([])
   const [displayedItems, setDisplayedItems] = useState(mockItems)
 
@@ -95,6 +99,25 @@ function DrawerMenu() {
     setDisplayedItems(filteredItems)
   }, [nameFilter, categoryFilter])
 
+  async function fetchData() {
+    await axios.get('http://localhost:8000/products').then((res) => {
+      const data = res.data.data
+      setDisplayedItems(data.map((item: any) => ({
+        ...item,
+        image: 'https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      })
+    ))
+    }).catch((err) => {
+      console.log(err)
+    }).finally(() => {
+      setIsLoadingData(false)
+    })
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
   return (
     <div className="w-full h-full flex flex-col gap-y-4 p-4">
       <input
@@ -102,7 +125,7 @@ function DrawerMenu() {
           setNameFilter(e.target.value)
         }}
         type="text"
-        className="w-full h-10 bg-zinc-900 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-[#1F8B96] transition-all duration-300 text-sm"
+        className="w-full h-10 bg-background-900 rounded-lg px-4 focus:outline-none focus:ring-2 text-text-50 focus:ring-accent-500 transition-all duration-300 text-sm text-text-50"
         placeholder="Pesquise um item..."
       />
       <div className="w-full h-fit min-h-16 flex flex-row gap-x-4 overflow-auto scroll-smooth scroll-m-0">
@@ -121,7 +144,7 @@ function DrawerMenu() {
           />
         ))}
       </div>
-      <div className="w-full h-full max-h-svh pb-18 p-4 overflow-auto">
+      <Skeleton isLoading={isLoadingData} className="w-full h-full max-h-svh pb-18 p-4 overflow-auto">
         <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-auto gap-x-4 gap-y-4">
           <AnimatePresence>
             {displayedItems.map((item, index) => (
@@ -136,7 +159,7 @@ function DrawerMenu() {
             ))}
           </AnimatePresence>
         </div>
-      </div>
+      </Skeleton>
     </div>
   )
 }
@@ -287,7 +310,14 @@ function Chat() {
     setIsLoading(false)
   }
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (socket.connected == false) {
+      navigate('/auth/login')
+      return
+    }
+
     socket.on('message', newMessageHandler)
     return () => {
       socket.off('message', newMessageHandler)
@@ -301,7 +331,7 @@ function Chat() {
           <div className="w-full h-fit min-h-14 flex flex-row items-center">
             <X
               size={20}
-              className="cursor-pointer hover:text-[#1F8B96] transition-colors duration-300"
+              className="cursor-pointer hover:text-accent-500 text-text-50 transition-colors duration-300"
               onClick={() => {
                 setIsModalOpen(false)
               }}
@@ -316,7 +346,7 @@ function Chat() {
               {newOrder?.items.map((item) => (
                 <div className="flex flex-row items-center justify-between w-full">
                   <div>
-                    <p className="text-sm">
+                    <p className="text-sm text-text-50">
                       {item.quantity}x - {item.name}
                     </p>
                     {item.observation && (
@@ -336,7 +366,7 @@ function Chat() {
             </div>
           </div>
           <hr className="text-zinc-500" />
-          <div className="w-full h-fit min-h-12 flex flex-row items-center justify-between font-bold">
+          <div className="text-text-50 w-full h-fit min-h-12 flex flex-row items-center justify-between font-bold">
             <p className="text-sm">Total</p>
             <p className="text-sm">
               {newOrder?.total.toLocaleString('pt-BR', {
@@ -351,7 +381,7 @@ function Chat() {
                 orderConfirmation({ confirm: false })
                 setIsModalOpen(false)
               }}
-              className="bg-secondary-500 text-sm p-4 py-2 hover:bg-zinc-700 duration-300 cursor-pointer rounded-lg transition-all"
+              className="bg-secondary-500 text-sm text-text-50 p-4 py-2 hover:bg-secondary-600 duration-300 cursor-pointer rounded-lg transition-all"
             >
               Cancelar
             </button>
@@ -360,7 +390,7 @@ function Chat() {
                 orderConfirmation({ confirm: true })
                 setIsModalOpen(false)
               }}
-              className="bg-[#15747f] text-sm p-4 py-2 hover:bg-[#1F8B96] duration-300 cursor-pointer rounded-lg transition-all"
+              className="bg-accent-600 text-text-50 text-sm p-4 py-2 hover:bg-accent-500 duration-300 cursor-pointer rounded-lg transition-all"
             >
               Confirmar
             </button>
@@ -388,7 +418,7 @@ function Chat() {
               onClick={() => {
                 setIsMenuDrawerOpen(true)
               }}
-              className='className="hidden md:block cursor-pointer hover:text-[#1F8B96] transition-colors duration-300'
+              className='className="hidden md:block cursor-pointer hover:text-accent-500 transition-colors duration-300'
             >
               <Book size={24} />
             </button>
@@ -467,7 +497,7 @@ function Chat() {
               onChange={(e) => {
                 setUserInput(e.target.value)
               }}
-              className="w-full h-10 bg-background-950 rounded-lg px-4 focus:outline-none focus:ring-2 text-text-200 focus:ring-[#1F8B96] transition-all duration-300 text-sm"
+              className="w-full h-10 bg-background-950 rounded-lg px-4 focus:outline-none focus:ring-2 text-text-200 focus:ring-accent-500 transition-all duration-300 text-sm"
               placeholder="Digite sua mensagem aqui..."
             />
             <button

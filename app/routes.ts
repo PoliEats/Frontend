@@ -7,6 +7,7 @@ import {
 
 export default [
   route('chat', 'routes/chat.tsx'),
+  route('privacy-policy', 'routes/privacy_policy.tsx'),
   index('routes/home.tsx'),
 
   layout('routes/auth/_layout.tsx', [
@@ -15,7 +16,8 @@ export default [
   ]),
 
   layout('routes/dashboard/_layout.tsx', [
-    route('dashboard/kitchen', 'routes/dashboard/kitchen.tsx'),
+    route('dashboard', 'routes/dashboard/index.tsx'),
+    route('dashboard/orders', 'routes/dashboard/kitchen.tsx'),
     route('dashboard/menu', 'routes/dashboard/menu.tsx'),
   ]),
 ] satisfies RouteConfig
