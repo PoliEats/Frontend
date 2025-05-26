@@ -111,7 +111,7 @@ function KitchenScreen() {
         )
         const completedOrders = orders.filter(
           (order: Order) => {
-            if (order.status === 'completed', order.status === 'paid') {
+            if (order.status === 'completed') {
               return order
             }
           }

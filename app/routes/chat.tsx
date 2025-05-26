@@ -2,6 +2,7 @@ import axios from 'axios'
 import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Book, Menu, Send, X } from 'react-feather'
+import { useNavigate } from 'react-router'
 import { ChatBubble, ChatBubbleOptions } from '~/components/ChatBubble'
 import DarkModeToggle from '~/components/DarkModeToggle'
 import { Drawer, DrawerContent, DrawerTopbar } from '~/components/Drawer'
@@ -309,7 +310,14 @@ function Chat() {
     setIsLoading(false)
   }
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (socket.connected == false) {
+      navigate('/auth/login')
+      return
+    }
+
     socket.on('message', newMessageHandler)
     return () => {
       socket.off('message', newMessageHandler)
