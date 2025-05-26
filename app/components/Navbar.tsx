@@ -17,8 +17,8 @@ function Navbar() {
       name: 'Cardápio',
     },
     {
-      path: '/dashboard/kitchen',
-      name: 'Cozinha',
+      path: '/dashboard/orders',
+      name: 'Pedidos',
     },
   ]
 

@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion'
+import { Info } from 'react-feather'
+import { TooltipContent, TooltipProvider, TooltipTrigger } from './Tooltip'
 
 function MenuItem({
   image,
@@ -23,14 +25,24 @@ function MenuItem({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <motion.div className="flex flex-col gap-y-6 items-center h-full w-full bg-zinc-800 rounded-lg p-4 hover:ring-2 hover:ring-[#1F8B96] transition-all duration-300 cursor-pointer">
+      <motion.div className="flex flex-col gap-y-6 items-center h-full w-full bg-background-900 rounded-lg p-4 hover:ring-2 hover:ring-accent-500 transition-all duration-300 cursor-pointer">
         <img
           src={image}
           alt="Menu Item"
           className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-lg object-cover ring"
         />
         <div className="w-full h-fit">
-          <h4 className="text-base">{name}</h4>
+          <div className='flex gap-x-2 items-center text-text-50'>
+            <h4 className="text-base">{name}</h4>
+            <TooltipProvider>
+              <TooltipTrigger>
+                <Info size={14}/>
+              </TooltipTrigger>
+              <TooltipContent>
+                {description}
+              </TooltipContent>
+            </TooltipProvider>
+          </div>
           <p className="text-sm text-gray-500">R$ {price}</p>
         </div>
       </motion.div>

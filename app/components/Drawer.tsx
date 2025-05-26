@@ -63,7 +63,7 @@ function DrawerContent({ children }: { children: ReactNode }) {
       animate={{ x: 0 }}
       exit={{ x: '100%' }}
       transition={{ duration: 0.3 }}
-      className="fixed top-0 right-0 w-6/7 md:w-2xl lg:w-1/3 h-full bg-zinc-950 z-50"
+      className="fixed top-0 right-0 w-6/7 md:w-2xl lg:w-1/3 h-full bg-background-950 z-50"
     >
       {children}
     </motion.div>
@@ -79,12 +79,12 @@ function DrawerTopbar({ children }: { children: ReactNode }) {
   return (
     <div className="flex items-center p-4 gap-x-8 border-zinc-800">
       <button
-        className="text-white hover:text-[#1F8B96] transition-colors duration-300 cursor-pointer"
+        className="text-white hover:text-accent-500 transition-colors duration-300 cursor-pointer"
         onClick={() => context.setIsOpen(false)}
       >
         <X size={24} />
       </button>
-      <p className="text-xl">{children}</p>
+      <p className="text-xl text-text-50">{children}</p>
     </div>
   )
 }

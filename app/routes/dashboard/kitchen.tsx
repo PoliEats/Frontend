@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { AnimatePresence, motion } from 'framer-motion'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { Modal, ModalContent } from '~/components/Modal'
 import { socket } from '~/functions/functions'
 import type { Order } from '~/functions/interfaces'
@@ -11,6 +13,7 @@ function KitchenScreen() {
   const [confirmingPayment, setConfirmingPayment] = useState<boolean>(false)
   const [pendingOrders, setPendingOrders] = useState<Order[]>([])
   const [completedOrders, setCompletedOrders] = useState<Order[]>([])
+  const [paymentMethod, setPaymentMethod] = useState<string>('')
 
   function handleNewOrder(data: string) {
     let order: Order = JSON.parse(data).newOrder
@@ -31,7 +34,7 @@ function KitchenScreen() {
     })
   }
 
-  function setOrderPaid(order: Order) {
+  async function setOrderPaid(order: Order) {
     setCompletedOrders((prev) => {
       if (prev) {
         return prev.filter((o) => o.id !== order.id)
@@ -42,10 +45,24 @@ function KitchenScreen() {
 
     //TODO: Send order to backend to mark as paid
 
+    await axios
+      .patch(`http://localhost:8000/order/${order.id}`, {
+        status: 'paid',
+        paymentMethod: paymentMethod,
+      })
+      .then((res) => {
+        toast.success('Pedido marcado como pago!');
+        setCompletedOrders((prev) => prev.filter((o) => o.id !== order.id))
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('Erro ao marcar pedido como pago');
+      })
+
     setConfirmingPayment(false)
   }
 
-  function setOrderReady(order: Order) {
+  async function setOrderReady(order: Order) {
     setPendingOrders((prev) => {
       if (prev) {
         return prev.filter((o) => o.id !== order.id)
@@ -62,6 +79,17 @@ function KitchenScreen() {
     })
 
     //TODO: Send order to backend to mark as ready
+    await axios
+      .patch(`http://localhost:8000/order/${order.id}`, {
+        status: 'completed',
+      })
+      .then((res) => {
+        toast.success('Pedido marcado como pronto!');
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error('Erro ao marcar pedido como pronto');
+      })
 
     setConfirmingReady(false)
   }
@@ -82,7 +110,11 @@ function KitchenScreen() {
           (order: Order) => order.status === 'pending'
         )
         const completedOrders = orders.filter(
-          (order: Order) => order.status === 'completed'
+          (order: Order) => {
+            if (order.status === 'completed') {
+              return order
+            }
+          }
         )
         setPendingOrders(pendingOrders)
         setCompletedOrders(completedOrders)
@@ -142,6 +174,10 @@ function KitchenScreen() {
             <select
               id="payment_method"
               className="bg-background-800 text-text-100 w-full h-10 rounded-lg px-4"
+              onChange={(e) => {
+                setPaymentMethod(e.target.value)
+              }}
+              value={paymentMethod}
             >
               <option value="cash">Dinheiro</option>
               <option value="card">Cartão</option>
@@ -176,7 +212,7 @@ function KitchenScreen() {
         <div className="h-fit min-h-82 w-full overflow-x-auto gap-x-4 flex flex-row py-4 px-2">
           <AnimatePresence>
             {pendingOrders.length > 0 ? (
-              pendingOrders.map((order) => (
+              pendingOrders.sort((a,b) => moment(b.createdAt).diff(a.createdAt)).map((order) => (
                 <motion.div
                   key={order.id}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -247,7 +283,7 @@ function KitchenScreen() {
         <div className="h-fit min-h-82 w-full overflow-x-auto gap-x-4 flex flex-row py-4 px-2">
           <AnimatePresence>
             {completedOrders.length > 0 ? (
-              completedOrders.map((order) => (
+              completedOrders.sort((a, b) => moment(b.createdAt).diff(a.createdAt)).map((order) => (
                 <motion.div
                   key={order.id}
                   initial={{ opacity: 0, scale: 0.8 }}

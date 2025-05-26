@@ -4,5 +4,5 @@ export type TProduct = {
   description: string
   price: number
   type: string
-  isAvailable: boolean
+  available: boolean
 }
