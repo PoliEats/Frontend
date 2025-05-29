@@ -5,7 +5,7 @@ import DarkModeToggle from '~/components/DarkModeToggle'
 function LandingPage() {
   return (
     <div className='bg-background-950'>
-      <div className="min-h-screen bg-background-950 text-white max-w-7xl mx-auto">
+      <div className="min-h-screen bg-background-950 text text-text-50 max-w-7xl mx-auto">
       <div className="w-full h-16 bg-background-950 z-20 flex items-center justify-between">
         <div className="pl-2 pt-2 flex items-center justify-between w-full bg-background-950">
           <img src="/logo.svg " className="w-14 h-14" />
@@ -74,11 +74,11 @@ function LandingPage() {
 
       <div className="w-full mt-48 hidden lg:block overflow-hidden relative h-[60px]">
         <div className="animate-marquee-track absolute whitespace-nowrap">
-          <span className="text-5xl font-medium text-white inline-block mx-8">
+          <span className="text-5xl font-medium text text-text-50 inline-block mx-8">
             Faça pedidos, verifique status e receba ofertas exclusivas. Tudo
             pelo chat!
           </span>
-          <span className="text-5xl font-medium text-white inline-block mx-8">
+          <span className="text-5xl font-medium text text-text-50 inline-block mx-8">
             Faça pedidos, verifique status e receba ofertas exclusivas. Tudo
             pelo chat!
           </span>
