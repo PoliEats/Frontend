@@ -47,8 +47,7 @@ function Register() {
   }
 
   return (
-    <main className="w-full overflow-hidden bg-background-950 flex items-center justify-center h-full">
-      {/* remove a altura na navbar da altura total */}
+    <main className="w-full overflow-auto bg-background-950 flex items-center justify-center min-h-screen">
       <ToastContainer />
       <form onSubmit={handleSubmit(enviarDados)}>
         <h1 className="text-text-50 text-3xl font-bold flex items-center justify-center pb-5">
